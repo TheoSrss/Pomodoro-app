@@ -1,0 +1,26 @@
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # OAuth 
+    App\Service\OAuth\OAuthServiceFactory:
+        arguments:
+            $locator: !tagged_locator
+                tag: 'app.oauth_service'
+                index_by: class
+    App\Service\OAuth\GoogleOAuthService:
+        tags: ['app.oauth_service']
+
+    App\Service\OAuth\GithubOAuthService:
+        tags: ['app.oauth_service']
