@@ -9,11 +9,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[ApiResource()]
+#[ApiResource(
+    operations: [
+        new Get()
+    ]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -159,18 +164,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->sessions->contains($session)) {
             $this->sessions->add($session);
             $session->setCreator($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSession(PomodoroSession $session): static
-    {
-        if ($this->sessions->removeElement($session)) {
-            // set the owning side to null (unless already changed)
-            if ($session->getCreator() === $this) {
-                $session->setCreator(null);
-            }
         }
 
         return $this;
