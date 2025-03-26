@@ -9,7 +9,6 @@ enum PomodoroSessionAction: string
     case CREATE = 'create';
     case START = 'start';
     case PAUSE = 'pause';
-    case NEXT = 'next';
     case ABORT = 'abort';
 
     public static function fromString(string $value): self

@@ -31,7 +31,6 @@ class PomodoroSessionProcessor implements ProcessorInterface
             PomodoroSessionAction::START => $this->manager->startSession(),
             PomodoroSessionAction::PAUSE => $this->manager->pauseSession(),
             PomodoroSessionAction::ABORT => $this->manager->abortSession(),
-            PomodoroSessionAction::NEXT => $this->manager->nextPhase(),
             default => throw new \LogicException("Unknown Pomodoro action: $action"),
         };
 

@@ -4,15 +4,18 @@ namespace App\Service;
 
 use App\Entity\PomodoroSession;
 use App\Entity\User;
+use App\Message\UpdatePomodoroTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PomodoroSessionManager
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private Security $security
+        private Security $security,
+        private MessageBusInterface $bus
     ) {}
 
     private function getUser(): User
@@ -80,8 +83,9 @@ class PomodoroSessionManager
         $session->setStartedAt($now);
         $session->setPhaseStartedAt($now);
 
-        $this->em->persist($session);
         $this->em->flush();
+
+        $this->bus->dispatch(new UpdatePomodoroTime($session->getId()));
 
         return $session;
     }
@@ -95,8 +99,11 @@ class PomodoroSessionManager
 
         $session->setIsPaused(!$session->getIsPaused());
 
-        $this->em->persist($session);
         $this->em->flush();
+
+        if (!$session->getIsPaused()) {
+            $this->bus->dispatch(new UpdatePomodoroTime($session->getId()));
+        }
 
         return $session;
     }
@@ -110,15 +117,15 @@ class PomodoroSessionManager
 
         $session->setIsAborted(true);
 
-        $this->em->persist($session);
         $this->em->flush();
 
         return $session;
     }
 
-    public function nextPhase(): PomodoroSession
+
+    // BACK ACTIONS
+    public function nextPhase(PomodoroSession $session): PomodoroSession
     {
-        $session = $this->getActiveSession();
 
         $this->assertStartedSession($session);
 
@@ -130,7 +137,6 @@ class PomodoroSessionManager
             $session->getPhase() === PomodoroSession::PHASE_LONG_BREAK
         ) {
             $session->setEndedAt(new \DateTimeImmutable());
-            $this->em->persist($session);
             $this->em->flush();
             return $session;
         }
@@ -152,8 +158,27 @@ class PomodoroSessionManager
         if ($session->getPhase() === PomodoroSession::PHASE_FOCUS) {
             $session->setCurrentCycle($session->getCurrentCycle() + 1);
         }
-        $this->em->persist($session);
         $this->em->flush();
         return $session;
     }
+
+    public function tick(PomodoroSession $session): void
+    {
+        $session->setElapsedSeconds($session->getElapsedSeconds() + 1);
+
+        $shouldChangePhase = match ($session->getPhase()) {
+            PomodoroSession::PHASE_FOCUS => $session->getElapsedSeconds() >= $session->getFocusDuration(),
+            PomodoroSession::PHASE_SHORT_BREAK => $session->getElapsedSeconds() >= $session->getShortBreakDuration(),
+            PomodoroSession::PHASE_LONG_BREAK => $session->getElapsedSeconds() >= $session->getLongBreakDuration(),
+            default => false
+        };
+
+        if ($shouldChangePhase) {
+            $this->nextPhase($session);
+        }
+
+        $this->em->flush();
+    }
+
+    // BACK ACTIONS
 }
