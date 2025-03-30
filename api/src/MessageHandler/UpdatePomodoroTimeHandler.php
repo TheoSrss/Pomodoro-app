@@ -5,7 +5,6 @@ namespace App\MessageHandler;
 use App\Message\UpdatePomodoroTime;
 use App\Repository\PomodoroSessionRepository;
 use App\Service\PomodoroSessionManager;
-use DateTime;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
@@ -13,7 +12,6 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 #[AsMessageHandler]
 class UpdatePomodoroTimeHandler
 {
-
     public function __construct(
         private PomodoroSessionManager $manager,
         private PomodoroSessionRepository $sessionRepository,

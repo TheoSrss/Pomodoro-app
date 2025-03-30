@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\ApiResource\PomodoroSessionAction;
+use App\Controller\PomodoroPublishController;
 use App\Entity\PomodoroSession;
 use App\Entity\User;
 use App\Message\UpdatePomodoroTime;
@@ -15,7 +17,8 @@ class PomodoroSessionManager
     public function __construct(
         private EntityManagerInterface $em,
         private Security $security,
-        private MessageBusInterface $bus
+        private MessageBusInterface $busForCounter,
+        private PomodoroPublishController $publisher
     ) {}
 
     private function getUser(): User
@@ -68,6 +71,9 @@ class PomodoroSessionManager
 
         $this->em->persist($session);
         $this->em->flush();
+
+        $this->publisher->publish($session, PomodoroSessionAction::START);
+
         return $session;
     }
 
@@ -85,7 +91,9 @@ class PomodoroSessionManager
 
         $this->em->flush();
 
-        $this->bus->dispatch(new UpdatePomodoroTime($session->getId()));
+        $this->busForCounter->dispatch(new UpdatePomodoroTime($session->getId()));
+
+        $this->publisher->publish($session, PomodoroSessionAction::START);
 
         return $session;
     }
@@ -102,9 +110,10 @@ class PomodoroSessionManager
         $this->em->flush();
 
         if (!$session->getIsPaused()) {
-            $this->bus->dispatch(new UpdatePomodoroTime($session->getId()));
+            $this->busForCounter->dispatch(new UpdatePomodoroTime($session->getId()));
         }
 
+        $this->publisher->publish($session, PomodoroSessionAction::START);
         return $session;
     }
 
@@ -118,7 +127,7 @@ class PomodoroSessionManager
         $session->setIsAborted(true);
 
         $this->em->flush();
-
+        $this->publisher->publish($session, PomodoroSessionAction::START);
         return $session;
     }
 
