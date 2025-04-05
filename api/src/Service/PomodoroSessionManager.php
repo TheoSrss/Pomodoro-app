@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\ApiResource\PomodoroSessionAction;
-use App\Controller\PomodoroPublishController;
+use App\Controller\PomodoroMercureController;
 use App\Entity\PomodoroSession;
 use App\Entity\User;
 use App\Message\UpdatePomodoroTime;
@@ -18,7 +18,7 @@ class PomodoroSessionManager
         private EntityManagerInterface $em,
         private Security $security,
         private MessageBusInterface $busForCounter,
-        private PomodoroPublishController $publisher
+        private PomodoroMercureController $publisher
     ) {}
 
     private function getUser(): User
@@ -188,6 +188,5 @@ class PomodoroSessionManager
 
         $this->em->flush();
     }
-
     // BACK ACTIONS
 }

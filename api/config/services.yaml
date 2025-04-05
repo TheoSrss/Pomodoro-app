@@ -1,10 +1,8 @@
-parameters:
-
 services:
     # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true
+        autoconfigure: true
 
     App\:
         resource: '../src/'
@@ -24,3 +22,12 @@ services:
 
     App\Service\OAuth\GithubOAuthService:
         tags: ['app.oauth_service']
+
+    # ✅ Mercure JWT Encoder
+    App\Service\MercureJwtEncoder:
+        arguments:
+            $secret: '%env(MERCURE_JWT_SECRET_PUBLIC)%'
+
+    App\Service\MercureSubscriberTokenGenerator:
+        arguments:
+            $secret: '%env(MERCURE_JWT_SECRET_PUBLIC)%'

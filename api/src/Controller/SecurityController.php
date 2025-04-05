@@ -2,15 +2,27 @@
 
 namespace App\Controller;
 
+use App\ApiResource\PomodoroSessionAction;
+use App\Entity\PomodoroSession;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\OAuth\OAuthServiceFactory;
+use Doctrine\ORM\EntityManagerInterface;
+use Dom\Entity;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class SecurityController extends AbstractController
 {
-    public function __construct(private OAuthServiceFactory $oauthFactory) {}
+    public function __construct(
+        private OAuthServiceFactory $oauthFactory,
+        private EntityManagerInterface $em,
+        private HubInterface $hub,
+        private PomodoroMercureController $publisher
+    ) {}
 
 
     #[Route('/oauth/connect/{service}', name: 'auth_oauth_connect', methods: ['GET', 'POST'])]
