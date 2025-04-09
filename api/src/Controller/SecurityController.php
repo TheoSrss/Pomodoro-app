@@ -2,18 +2,14 @@
 
 namespace App\Controller;
 
-use App\ApiResource\PomodoroSessionAction;
-use App\Entity\PomodoroSession;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\OAuth\OAuthServiceFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Dom\Entity;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 final class SecurityController extends AbstractController
 {
@@ -33,13 +29,24 @@ final class SecurityController extends AbstractController
             ->redirect([], []);
     }
 
-    #[Route('/oauth/check/{service}', name: 'auth_oauth_check', methods: ['GET', 'POST'])]
-    public function connectCheck(string $service): JsonResponse
+    #[Route('/api/oauth/check/{service}', name: 'auth_oauth_check', methods: ['GET', 'POST'])]
+    public function connectCheck(string $service, Request $request): JsonResponse
     {
         try {
+            $data = json_decode($request->getContent(), true);
+            if (!isset($data['access_token'])) {
+                return new JsonResponse(['error' => 'Missing access_token'], 400);
+            }
+
             $OAuthService = $this->oauthFactory->getOAuthService($service);
-            $token = $OAuthService->authenticate();
-            return new JsonResponse(['token' => $token]);
+            $infos = $OAuthService->authenticate($data['access_token']);
+            return new JsonResponse([
+                'token' => $infos['token'],
+                'user' => [
+                    'id' => $infos['user']->getId(),
+                    'email' => $infos['user']->getEmail(),
+                ]
+            ]);
         } catch (\Throwable $e) {
             return new JsonResponse(['error' => $e->getMessage()], 400);
         }

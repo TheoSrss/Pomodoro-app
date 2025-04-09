@@ -9,6 +9,7 @@ class AuthenticationSuccessListener
 {
     public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event): void
     {
+        /** @var User $user */
         $user = $event->getUser();
         if (!$user) {
             return;

@@ -3,6 +3,7 @@
 namespace App\Service\OAuth;
 
 use App\Entity\User;
+use League\OAuth2\Client\Provider\GithubResourceOwner;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 
 class GithubOAuthService extends AbstractOAuthService
@@ -14,6 +15,11 @@ class GithubOAuthService extends AbstractOAuthService
 
     protected function getUser(ResourceOwnerInterface $userOAuth): User
     {
+
+        if (!$userOAuth instanceof GithubResourceOwner) {
+            throw new \LogicException();
+        }
+
         $user = $this->em->getRepository(User::class)->findOneBy(['email' => $userOAuth->getEmail(), 'githubId' => $userOAuth->getId()]);
 
         if (!$user) {

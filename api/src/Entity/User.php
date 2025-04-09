@@ -21,6 +21,12 @@ use ApiPlatform\Metadata\Get;
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
+    public static array $allRoles = [self::ROLE_USER, self::ROLE_ADMIN];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -98,7 +104,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
+        $accepted = array_filter($roles, function ($role) {
+            return in_array($role, self::$allRoles);
+        });
+
+        $this->roles = array_unique($accepted);
 
         return $this;
     }
