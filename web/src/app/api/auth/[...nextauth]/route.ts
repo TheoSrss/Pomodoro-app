@@ -63,19 +63,14 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ account, token, user }) {
-            // Connexion via credentials
             if (user?.token) {
                 token.accessToken = user.token;
                 token.id = user.id;
                 token.email = user.email;
                 return token;
             }
-
-            console.log(account)
-            // Connexion via OAuth (Google)
             if (account?.provider === "google") {
                 const googleAccessToken = account.access_token;
-                console.log("Access token envoyé au backend :", googleAccessToken);
 
                 const res = await fetch(`${process.env.NEXT_PUBLIC_URI_API}/oauth/check/google`, {
                     method: "POST",
@@ -84,7 +79,6 @@ export const authOptions: NextAuthOptions = {
                 });
 
                 const data = await res.json();
-                console.log(data)
                 if (!res.ok || !data.token) {
                     throw new Error("Échec lors de l'échange du token Google");
                 }

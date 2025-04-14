@@ -6,10 +6,9 @@ import { signOut } from "next-auth/react";
 export default function Home() {
   return (
     <div className="">
-      <p className="underline decoration-double">PROTECTED</p>
+      <p className="underline decoration-double text-red-800">PROTECTED</p>
       <Button
         onClick={() => signOut({ callbackUrl: "/login" })}
-        variant="destructive"
       >
         Déconnexion
       </Button>
