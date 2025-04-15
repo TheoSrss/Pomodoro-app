@@ -1,13 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@800&display=swap');
 @import "tailwindcss";
 
-@theme{
-  /* --color-prout : red */
+@theme {
+  
   --color-beige: lch(94.45 0 0);
-
+  --font-primary: "Doto", "serif";
 }
 
 /* Thèmes clairs & sombres */
 :root {
+
   --background: #e8e7e8;
   --foreground:rgb(12, 49, 16);
   
@@ -55,5 +57,7 @@
   } */
   body {
     @apply bg-[var(--background)] text-[var(--foreground)] ;
+    /* font-family: var(--font-poppins), sans-serif; */
+
   }
 }
