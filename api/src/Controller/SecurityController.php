@@ -40,6 +40,7 @@ final class SecurityController extends AbstractController
 
             $OAuthService = $this->oauthFactory->getOAuthService($service);
             $infos = $OAuthService->authenticate($data['access_token']);
+
             return new JsonResponse([
                 'token' => $infos['token'],
                 'user' => [

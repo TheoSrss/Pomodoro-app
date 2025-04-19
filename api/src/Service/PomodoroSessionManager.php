@@ -72,9 +72,7 @@ class PomodoroSessionManager
         $this->em->persist($session);
         $this->em->flush();
 
-        $this->publisher->publish($session, PomodoroSessionAction::START);
-
-        return $session;
+        return $this->start($session);
     }
 
     public function startSession(): PomodoroSession
@@ -84,7 +82,11 @@ class PomodoroSessionManager
         if ($session->getStartedAt() || $session->getPhaseStartedAt()) {
             throw new \LogicException('Session already started');
         }
+        return $this->start($session);
+    }
 
+    private function start(PomodoroSession $session)
+    {
         $now = new \DateTimeImmutable();
         $session->setStartedAt($now);
         $session->setPhaseStartedAt($now);
@@ -92,11 +94,11 @@ class PomodoroSessionManager
         $this->em->flush();
 
         $this->busForCounter->dispatch(new UpdatePomodoroTime($session->getId()));
-
         $this->publisher->publish($session, PomodoroSessionAction::START);
 
         return $session;
     }
+
 
     public function pauseSession(): PomodoroSession
     {
