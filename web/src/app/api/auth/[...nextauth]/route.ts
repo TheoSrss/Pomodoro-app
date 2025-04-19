@@ -1,5 +1,4 @@
 import { CustomUser } from "@/types/next-auth";
-import { log } from "console";
 import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -88,7 +87,18 @@ export const authOptions: NextAuthOptions = {
                 token.email = data.user?.email;
             }
             return token;
-        }
+        },
+        async session({ session, token }) {
+            if (token) {
+                session.accessToken = token.accessToken as string;
+                session.user = {
+                    id: token.id as string,
+                    email: token.email as string,
+                    token: token.accessToken as string,
+                };
+            }
+            return session;
+        },
     },
     session: {
         strategy: "jwt",
