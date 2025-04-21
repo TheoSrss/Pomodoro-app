@@ -9,9 +9,9 @@ export interface PomodoroSession {
     repetitions: number
     currentCycle: number
     phase: PomodoroPhase
-    phaseStartedAt: string | null
+    phaseStartedAt: string | null | undefined
     elapsedSeconds: number
     isPaused: boolean
     isAborted: boolean
-    startedAt: string | null
+    startedAt: string | null | undefined
 }

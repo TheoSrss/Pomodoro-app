@@ -28,7 +28,7 @@ export default function Login() {
         }
     }, [errorSearch])
 
-    const handleLogin = async (e: any) => {
+    const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         await signIn("credentials", {

@@ -10,7 +10,7 @@ type Props = {
 
 export const TimerProgress = ({ progress, timeLeft, currentCycle, phase }: Props) => {
     const pathLength = 320;
-    let textPhase = phase == 'focus' ? "Focus" : phase === "long_break" ? "Big break" : "Short break";
+    const textPhase = phase == 'focus' ? "Focus" : phase === "long_break" ? "Big break" : "Short break";
 
     return (
         <div className="relative w-[400px] h-[400px] flex items-center justify-center m-5">

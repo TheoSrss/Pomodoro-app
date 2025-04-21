@@ -2,7 +2,23 @@
 
 import { PomodoroSession } from "@/types/pomodoroSession";
 
-export const mapApiToPomodoroSession = (data: any): PomodoroSession => ({
+type ApiPomodoroSession = {
+    "@id": number | null;
+    creator: string;
+    focusDuration: number;
+    shortBreakDuration: number;
+    longBreakDuration: number;
+    repetitions: number;
+    currentCycle: number;
+    phase: "focus" | "short_break" | "long_break";
+    phaseStartedAt?: string | null | undefined;
+    elapsedSeconds: number;
+    isPaused: boolean;
+    isAborted: boolean;
+    startedAt?: string | null | undefined;
+};
+
+export const mapApiToPomodoroSession = (data: ApiPomodoroSession): PomodoroSession => ({
     id: data['@id'],
     creator: data.creator,
     focusDuration: data.focusDuration,

@@ -36,11 +36,11 @@ export const usePomodoroSession = () => {
             const data = await res.json();
             setPomodoroSession(mapApiToPomodoroSession(data));
 
-        } catch (error) {
+        } catch {
         } finally {
             setLoading(false);
         }
-    }, [session?.accessToken]);
+    }, [headers, session?.accessToken, session?.user?.id]);
 
     const performSessionAction = async (
         action: Action,
@@ -65,13 +65,11 @@ export const usePomodoroSession = () => {
             });
 
             if (!res.ok) {
-                console.error(`Failed to ${action} session`, await res.text());
                 return null;
             }
             const data = await res.json();
             setPomodoroSession(action === 'abort' ? createEmptyPomodoroSession(session.user.id) : mapApiToPomodoroSession(data));
-        } catch (err) {
-            console.error(`Error while trying to ${action} session:`, err);
+        } catch {
             return;
         } finally {
             setLoading(false);

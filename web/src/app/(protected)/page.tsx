@@ -1,8 +1,6 @@
 'use client'
 
 import { NavBar } from "@/components/navbar/navbar";
-import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react";
 import { Pomodoro } from "@/components/pomodoro/pomodoro";
 
 export default function Home() {
