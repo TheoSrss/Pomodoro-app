@@ -8,7 +8,6 @@ export type Action = "create" | "start" | "pause" | "abort";
 
 export const usePomodoroSession = () => {
     const { data: session } = useSession();
-    // console.log(session?.accessToken);
     const [pomodoroSession, setPomodoroSession] = useState<PomodoroSession | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -38,35 +37,39 @@ export const usePomodoroSession = () => {
             setPomodoroSession(mapApiToPomodoroSession(data));
 
         } catch (error) {
-            // console.error("Error fetching session:", error);
         } finally {
             setLoading(false);
         }
     }, [session?.accessToken]);
 
-
     const performSessionAction = async (
         action: Action,
     ) => {
         if (!session?.accessToken) return;
-        setLoading(true);
-
-
         const url = `${process.env.NEXT_PUBLIC_URI_API}/session/${action}`;
-
         try {
+            const body = action === "create"
+                ? JSON.stringify({
+                    focusDuration: pomodoroSession?.focusDuration,
+                    shortBreakDuration: pomodoroSession?.shortBreakDuration,
+                    longBreakDuration: pomodoroSession?.longBreakDuration,
+                    repetitions: pomodoroSession?.repetitions,
+
+                })
+                : null;
+
             const res = await fetch(url, {
                 method: "POST",
-                headers
+                headers,
+                body
             });
 
             if (!res.ok) {
                 console.error(`Failed to ${action} session`, await res.text());
                 return null;
             }
-
             const data = await res.json();
-            setPomodoroSession(mapApiToPomodoroSession(data));
+            setPomodoroSession(action === 'abort' ? createEmptyPomodoroSession(session.user.id) : mapApiToPomodoroSession(data));
         } catch (err) {
             console.error(`Error while trying to ${action} session:`, err);
             return;

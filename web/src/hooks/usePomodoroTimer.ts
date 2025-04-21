@@ -11,7 +11,6 @@ type Simulated = {
 export const usePomodoroTimer = (session: PomodoroSession | null): Simulated | null => {
     const [now, setNow] = useState(() => Date.now());
 
-    // Le timer ne tourne que si la session est démarrée et non en pause
     useEffect(() => {
         if (!session?.phaseStartedAt || session.isPaused) return;
         const interval = setInterval(() => setNow(Date.now()), 1000);
@@ -27,7 +26,6 @@ export const usePomodoroTimer = (session: PomodoroSession | null): Simulated | n
             long_break: session.longBreakDuration,
         }[session.phase];
 
-        // Si la session n'a pas commencé OU qu'elle est en pause
         if (!session.phaseStartedAt || session.isPaused) {
             const timeLeft = Math.max(0, duration - session.elapsedSeconds);
             const progress = Math.min(1, session.elapsedSeconds / duration);
@@ -40,7 +38,6 @@ export const usePomodoroTimer = (session: PomodoroSession | null): Simulated | n
             };
         }
 
-        // Timer en cours → simulation en temps réel
         const start = new Date(session.phaseStartedAt).getTime();
         const elapsed = Math.floor((now - start) / 1000);
 
