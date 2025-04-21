@@ -1,4 +1,3 @@
-// src/lib/auth/authOptions.ts
 
 import { CustomUser } from "@/types/next-auth";
 import { NextAuthOptions } from "next-auth";
@@ -60,7 +59,7 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ account, token, user }) {
-            if (user?.token) {
+            if (user && "token" in user) {
                 token.accessToken = user.token;
                 token.id = user.id;
                 token.email = user.email;

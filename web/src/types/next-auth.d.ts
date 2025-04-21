@@ -1,4 +1,5 @@
-// import type { NextAuth } from "next-auth";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { NextAuth } from "next-auth";
 
 type CustomUser = {
     id: string;
