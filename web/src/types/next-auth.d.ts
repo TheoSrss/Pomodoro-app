@@ -1,4 +1,4 @@
-
+// import type { NextAuth } from "next-auth";
 
 type CustomUser = {
     id: string;
