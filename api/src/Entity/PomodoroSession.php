@@ -30,11 +30,18 @@ use Symfony\Component\Validator\Constraints as Assert;
             output: PomodoroSession::class,
         ),
         new Post(
+            name: 'session_create',
+            uriTemplate: '/session/create',
+            processor: PomodoroSessionProcessor::class,
+            output: PomodoroSession::class
+        ),
+        new Post(
             name: 'session_action',
             uriTemplate: '/session/{action}',
             uriVariables: ['action' => new Link(fromClass: null, identifiers: ['action'])],
             processor: PomodoroSessionProcessor::class,
             read: false,
+            input: false,
             output: PomodoroSession::class
         ),
 
@@ -63,19 +70,19 @@ class PomodoroSession
     private ?User $creator;
 
     #[ORM\Column(type: 'integer')]
-    #[Assert\Range(min: 300, max: 3600)]
+    // #[Assert\Range(min: 300, max: 3600)]
     #[Assert\NotNull]
     #[Groups(['pomodoro:read', 'pomodoro:write'])]
     private int $focusDuration = 1500;
 
     #[ORM\Column(type: 'integer')]
-    #[Assert\Range(min: 120, max: 1800)]
+    // #[Assert\Range(min: 120, max: 1800)]
     #[Assert\NotNull]
     #[Groups(['pomodoro:read', 'pomodoro:write'])]
     private int $shortBreakDuration = 300;
 
     #[ORM\Column(type: 'integer')]
-    #[Assert\Range(min: 600, max: 3600)]
+    // #[Assert\Range(min: 600, max: 3600)]
     #[Assert\NotNull]
     #[Groups(['pomodoro:read', 'pomodoro:write'])]
     private int $longBreakDuration = 900;

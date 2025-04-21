@@ -22,6 +22,9 @@ class PomodoroSessionProcessor implements ProcessorInterface
         array $uriVariables = [],
         array $context = []
     ): PomodoroSession {
+        if ($operation->getName() === 'session_create') {
+            return $this->manager->newSession($data);
+        }
 
         $actionStr = $uriVariables['action'] ?? null;
         $action = PomodoroSessionAction::fromString($actionStr);
