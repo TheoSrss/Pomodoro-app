@@ -12,7 +12,6 @@ declare module "next-auth" {
         user: CustomUser;
     }
 
-    interface User extends CustomUser { }
 
     interface JWT {
         accessToken?: string;
