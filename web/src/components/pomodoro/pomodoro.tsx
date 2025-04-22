@@ -38,7 +38,7 @@ export function Pomodoro() {
     }
 
     return (
-        <div className="m-auto my-30 min-w-100 max-w-140 flex flex-col py-10 px-20 bg-beige rounded-2xl shadow-[0.625rem_0.625rem_0.875rem_0_rgb(225,226,228),-0.5rem_-0.5rem_1.125rem_0_rgb(255,255,255)]">
+        <div className="w-full mt-30 flex flex-col py-10 px-20 bg-beige rounded-2xl shadow-[0.625rem_0.625rem_0.875rem_0_rgb(225,226,228),-0.5rem_-0.5rem_1.125rem_0_rgb(255,255,255)]">
             <Loading />
         </div>
     );

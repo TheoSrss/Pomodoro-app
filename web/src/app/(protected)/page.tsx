@@ -5,7 +5,7 @@ import { Pomodoro } from "@/components/pomodoro/pomodoro";
 
 export default function Home() {
   return (
-    <div className="bg-red-000 py-10 px-100 flex flex-col items-center">
+    <div className="mx-5 xl:w-6xl xl:mx-auto mt-5 flex flex-col items-center">
       <NavBar />
       <Pomodoro />
     </div>
