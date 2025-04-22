@@ -7,16 +7,18 @@ type Props = {
     currentCycle: number;
     phase: PomodoroPhase
 };
-
 export const TimerProgress = ({ progress, timeLeft, currentCycle, phase }: Props) => {
     const pathLength = 320;
-    const textPhase = phase == 'focus' ? "Focus" : phase === "long_break" ? "Big break" : "Short break";
+    const textPhase =
+        phase === "focus" ? "Focus" :
+            phase === "long_break" ? "Big break" : "Short break";
 
     return (
-        <div className="relative w-[400px] h-[400px] flex items-center justify-center m-5">
-            <h2 className="mb-30">{textPhase}</h2>
+        <div className="relative w-full max-w-[400px] aspect-square flex items-center justify-center mx-auto px-4">
+            <h2 className="absolute top-0 text-center text-sm sm:text-md font-semibold">{textPhase}</h2>
+
             <svg viewBox="0 0 100 100" className="absolute w-full h-full">
-                {/* FOND : chemin complet en gris foncé */}
+                {/* FOND : contour gris foncé */}
                 <rect
                     x="5"
                     y="5"
@@ -43,7 +45,6 @@ export const TimerProgress = ({ progress, timeLeft, currentCycle, phase }: Props
                     strokeDasharray={pathLength}
                     strokeDashoffset={pathLength * (1 - progress)}
                     strokeLinecap="round"
-                    transform="rotate(-0 50 50)"
                     className="transition-all duration-500 ease-in-out"
                 />
             </svg>

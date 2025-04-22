@@ -18,7 +18,7 @@ export function Pomodoro() {
         const seconds = String(simulated.timeLeft % 60).padStart(2, "0");
         const timeLeft = `${minutes}:${seconds}`;
         return (
-            <div className="w-full flex flex-col items-center justify-around pt-2 pb-3 px-4 bg-beige rounded-2xl shadow-[0.625rem_0.625rem_0.875rem_0_rgb(225,226,228),-0.5rem_-0.5rem_1.125rem_0_rgb(255,255,255)] mt-30">
+            <div className="w-full flex flex-col items-center justify-around pt-2 pb-3 px-4 bg-beige rounded-2xl shadow-[0.625rem_0.625rem_0.875rem_0_rgb(225,226,228),-0.5rem_-0.5rem_1.125rem_0_rgb(255,255,255)] mt-10 xl:mt-30">
                 <TimerProgress
                     progress={simulated.progress}
                     currentCycle={simulated.currentCycle}
@@ -36,7 +36,6 @@ export function Pomodoro() {
             </div>
         );
     }
-
     return (
         <div className="w-full mt-30 flex flex-col py-10 px-20 bg-beige rounded-2xl shadow-[0.625rem_0.625rem_0.875rem_0_rgb(225,226,228),-0.5rem_-0.5rem_1.125rem_0_rgb(255,255,255)]">
             <Loading />

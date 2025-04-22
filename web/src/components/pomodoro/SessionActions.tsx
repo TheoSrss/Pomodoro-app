@@ -8,25 +8,28 @@ type SessionActionsProps = {
     onAbort: () => void;
 };
 
-
 export function SessionActions({
     isStart,
     onStart,
     onPause,
-    onAbort
-}: SessionActionsProps
-) {
-
+    onAbort,
+}: SessionActionsProps) {
     return (
-        <div className="flex flex-row gap-10 my-20">
+        <div className="mb-10 w-full flex justify-center">
             {isStart ? (
-                <>
-                    <Button onClick={onPause}>PAUSE</Button>
-                    <Button onClick={onAbort}>ANNULER</Button>
-                </>
-            )
-                :
-                <Button onClick={onStart}>START</Button>
-            }
-        </div>)
+                <div className="flex flex-row gap-4 sm:gap-6 md:gap-10 w-fit">
+                    <Button className="w-auto px-8" onClick={onPause}>
+                        PAUSE
+                    </Button>
+                    <Button className="w-auto px-8" onClick={onAbort}>
+                        STOP
+                    </Button>
+                </div>
+            ) : (
+                <Button className="w-auto px-10" onClick={onStart}>
+                    START
+                </Button>
+            )}
+        </div>
+    );
 }

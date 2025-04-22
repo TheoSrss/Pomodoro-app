@@ -9,7 +9,6 @@ type SettingSliderProps = {
     disabled?: boolean,
     onChange: (value: number) => void;
 };
-
 export function SettingSlider({
     label,
     value,
@@ -20,9 +19,9 @@ export function SettingSlider({
     onChange,
 }: SettingSliderProps) {
     return (
-        <div className="flex flex-col gap-2 items-center bg-[#1e1e1e] rounded-2xl px-4 py-3 text-white w-full shadow-[5px_5px_10px_rgb(25,25,25),-5px_-5px_10px_rgb(60,60,60)] ">
-            <span className="text-l text-gray-400">{label}</span>
-            <span className="text-xl font-semibold">
+        <div className="w-30 xl:w-35 flex flex-col gap-2 items-center bg-[#1e1e1e] rounded-2xl px-4 py-3 text-white shadow-[5px_5px_10px_rgb(25,25,25),-5px_-5px_10px_rgb(60,60,60)] text-center">
+            <span className="text-xs xl:text-xl text-gray-400">{label}</span>
+            <span className="text-s xl:text-xl font-semibold">
                 {Math.round(value)}{suffix}
             </span>
             <input
@@ -39,8 +38,6 @@ export function SettingSlider({
         </div>
     );
 }
-
-
 export function SessionSettings({
     session,
     onChange,
@@ -48,9 +45,10 @@ export function SessionSettings({
     session: PomodoroSession,
     onChange: (field: string, value: number) => void;
 }) {
-    const disabled = !!session.startedAt
+    const disabled = !!session.startedAt;
+
     return (
-        <div className="flex flex-row gap-10 my-20">
+        <div className="grid grid-cols-2 justify-items-center  xl:grid-cols-4 gap-6 my-10 w-full max-w-5xl mx-auto">
             <SettingSlider
                 label="Focus"
                 value={session.focusDuration / 60}
@@ -90,8 +88,6 @@ export function SessionSettings({
                 disabled={disabled}
                 onChange={(v) => onChange("repetitions", v)}
             />
-
-
         </div>
     );
 }
