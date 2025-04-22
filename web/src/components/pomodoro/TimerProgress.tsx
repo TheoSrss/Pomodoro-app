@@ -14,7 +14,7 @@ export const TimerProgress = ({ progress, timeLeft, currentCycle, phase }: Props
             phase === "long_break" ? "Big break" : "Short break";
 
     return (
-        <div className="relative w-full max-w-[400px] aspect-square flex items-center justify-center mx-auto px-4">
+        <div className="relative w-full max-w-[400px] aspect-square flex items-center justify-center mx-auto px-4 my-10">
             <h2 className="absolute top-0 text-center text-sm sm:text-md font-semibold">{textPhase}</h2>
 
             <svg viewBox="0 0 100 100" className="absolute w-full h-full">

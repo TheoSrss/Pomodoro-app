@@ -70,7 +70,7 @@ function LoginFormContent() {
             </div>
 
             <Button onClick={() => signIn("google", { callbackUrl: "/" })} className="mb-4">
-                <Image src="/google.webp" alt="Google" width={20} height={20} />
+                <Image src="/google.png" alt="Google" width={20} height={20} className="bg-transparent" />
                 Google
             </Button>
             <Button onClick={() => signIn("github", { callbackUrl: "/" })}>
