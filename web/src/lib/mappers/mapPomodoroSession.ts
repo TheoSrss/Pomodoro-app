@@ -2,7 +2,7 @@
 
 import { PomodoroSession } from "@/types/pomodoroSession";
 
-type ApiPomodoroSession = {
+export type ApiPomodoroSession = {
     "@id": number | null;
     creator: string;
     focusDuration: number;

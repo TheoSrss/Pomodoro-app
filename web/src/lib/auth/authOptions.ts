@@ -1,9 +1,9 @@
-
 import { CustomUser } from "@/types/next-auth";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import api from "@/lib/api"; // ky instance
 
 export const authOptions: NextAuthOptions = {
     pages: {
@@ -18,23 +18,26 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials): Promise<CustomUser | null> {
                 try {
-                    const res = await fetch(`${process.env.NEXT_PUBLIC_URI_API}/login`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            email: credentials?.email,
-                            password: credentials?.password,
-                        }),
-                    });
-                    const data = await res.json();
+                    const data = await api
+                        .post("login", {
+                            json: {
+                                email: credentials?.email,
+                                password: credentials?.password,
+                            },
+                        })
+                        .json<{
+                            token: string;
+                            user: { id: string; email: string };
+                        }>();
 
-                    if (res.ok && data.token) {
+                    if (data.token) {
                         return {
                             id: data.user.id,
                             email: data.user.email,
                             token: data.token,
                         };
                     }
+
                     return null;
                 } catch {
                     return null;
@@ -65,24 +68,27 @@ export const authOptions: NextAuthOptions = {
                 token.email = user.email;
                 return token;
             }
+
             if (account?.provider === "google") {
-                const googleAccessToken = account.access_token;
+                try {
+                    const data = await api
+                        .post("oauth/check/google", {
+                            json: { access_token: account.access_token },
+                        })
+                        .json<{
+                            token: string;
+                            user: { id: string; email: string };
+                        }>();
 
-                const res = await fetch(`${process.env.NEXT_PUBLIC_URI_API}/oauth/check/google`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ access_token: googleAccessToken }),
-                });
-
-                const data = await res.json();
-                if (!res.ok || !data.token) {
+                    token.accessToken = data.token;
+                    token.id = data.user?.id;
+                    token.email = data.user?.email;
+                } catch (error) {
+                    console.error("Google OAuth error:", error);
                     throw new Error("Échec lors de l'échange du token Google");
                 }
-
-                token.accessToken = data.token;
-                token.id = data.user?.id;
-                token.email = data.user?.email;
             }
+
             return token;
         },
         async session({ session, token }) {

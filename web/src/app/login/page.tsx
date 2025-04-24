@@ -21,6 +21,8 @@ function LoginFormContent() {
             setFormError("Un compte avec cette adresse existe déjà. Veuillez utiliser un autre moyen de connexion.")
         } else if (errorSearch === "CredentialsSignin") {
             setFormError("Email ou mot de passe incorrect.")
+        } else if (errorSearch === "expired") {
+            setFormError("Session expirée.")
         } else if (errorSearch) {
             setFormError("Une erreur est survenue. Veuillez réessayer.")
         } else {
