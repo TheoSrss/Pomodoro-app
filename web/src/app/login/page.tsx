@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Error } from "@/components/ui/error"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
+// import { LogoGoogle } from '@geist/icons';
+import { FcGoogle } from "react-icons/fc";
 
 function LoginFormContent() {
     const [email, setEmail] = useState("")
@@ -70,11 +72,12 @@ function LoginFormContent() {
             </div>
 
             <Button onClick={() => signIn("google", { callbackUrl: "/" })} className="mb-4">
-                <Image src="/google.png" alt="Google" width={20} height={20} className="bg-transparent" />
+                <FcGoogle style={{ width: 25, height: 25 }} />
+                {/* <Image src="/google.png" alt="Google" width={20} height={20} className="bg-transparent" /> */}
                 Google
             </Button>
             <Button onClick={() => signIn("github", { callbackUrl: "/" })}>
-                <Image src="/github.png" alt="Github" width={20} height={20} />
+                <Image src="/github.png" alt="Github" width={25} height={25} />
                 Github
             </Button>
         </>
