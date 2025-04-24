@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Button } from "../ui/button";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
 
 function NavBar() {
