@@ -4,7 +4,6 @@ import { signOut, useSession } from "next-auth/react";
 import { LogOut } from "lucide-react";
 
 function NavBar() {
-    const { data: session } = useSession();
 
     return (
         <div className="relative w-full px-5 xl:px-10 pt-2 pb-3 flex flex-row items-center justify-between bg-beige rounded-2xl shadow-[0.625rem_0.625rem_0.875rem_0_rgb(225,226,228),-0.5rem_-0.5rem_1.125rem_0_rgb(255,255,255)]">
