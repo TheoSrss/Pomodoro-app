@@ -76,10 +76,10 @@ function LoginFormContent() {
                 {/* <Image src="/google.png" alt="Google" width={20} height={20} className="bg-transparent" /> */}
                 Google
             </Button>
-            <Button onClick={() => signIn("github", { callbackUrl: "/" })}>
+            {/* <Button onClick={() => signIn("github", { callbackUrl: "/" })}>
                 <Image src="/github.png" alt="Github" width={25} height={25} />
                 Github
-            </Button>
+            </Button> */}
         </>
     )
 }
