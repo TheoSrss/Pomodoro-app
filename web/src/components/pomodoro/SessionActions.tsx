@@ -18,7 +18,7 @@ export function SessionActions({
         <div className="mb-10 w-full flex justify-center">
             {isStart ? (
                 <div className="flex flex-row gap-4 sm:gap-6 md:gap-10 w-fit">
-                    <Button className="w-auto px-8" onClick={onPause}>
+                    <Button className="w-auto px-8 hidden" onClick={onPause}>
                         PAUSE
                     </Button>
                     <Button className="w-auto px-8" onClick={onAbort}>
