@@ -9,76 +9,96 @@ type Simulated = {
 };
 
 export const usePomodoroTimer = (session: PomodoroSession | null): Simulated | null => {
-    const [now, setNow] = useState(() => Date.now());
+    const [offset, setOffset] = useState(0);
 
     useEffect(() => {
-        if (!session?.phaseStartedAt || session.isPaused) return;
-        const interval = setInterval(() => setNow(Date.now()), 1000);
+        if (!session || session.isPaused) {
+            setOffset(0);
+            return;
+        }
+
+        const interval = setInterval(() => {
+            setOffset((prev) => prev + 1);
+        }, 1000);
+
         return () => clearInterval(interval);
-    }, [session?.phaseStartedAt, session?.isPaused]);
+    }, [session]);
 
     const simulated = useMemo(() => {
         if (!session) return null;
 
-        const duration = {
-            focus: session.focusDuration,
-            short_break: session.shortBreakDuration,
-            long_break: session.longBreakDuration,
-        }[session.phase];
+        const {
+            focusDuration,
+            shortBreakDuration,
+            longBreakDuration,
+            repetitions,
+            currentCycle,
+            phase,
+            elapsedSeconds,
+        } = session;
 
-        if (!session.phaseStartedAt || session.isPaused) {
-            const timeLeft = Math.max(0, duration - session.elapsedSeconds);
-            const progress = Math.min(1, session.elapsedSeconds / duration);
-
+        const phases: { type: PomodoroPhase; duration: number }[] = Array.from({ length: repetitions * 2 }, (_, i) => {
+            const isBreak = i % 2 === 1;
+            const isLast = i === repetitions * 2 - 1;
             return {
-                phase: session.phase,
-                currentCycle: session.currentCycle,
-                timeLeft,
-                progress,
+                type: isBreak
+                    ? isLast
+                        ? "long_break"
+                        : "short_break"
+                    : "focus",
+                duration: isBreak
+                    ? isLast
+                        ? longBreakDuration
+                        : shortBreakDuration
+                    : focusDuration,
             };
-        }
+        });
 
-        const start = new Date(session.phaseStartedAt).getTime();
-        const elapsed = Math.floor((now - start) / 1000);
+        console.log(phases)
+        let phaseIndex = -1;
+        let focusSeen = 0;
 
-        const phases: Array<{ type: PomodoroPhase; duration: number }> = [];
-
-        for (let i = 1; i <= session.repetitions; i++) {
-            phases.push({ type: "focus", duration: session.focusDuration });
-            if (i < session.repetitions) {
-                phases.push({ type: "short_break", duration: session.shortBreakDuration });
-            } else {
-                phases.push({ type: "long_break", duration: session.longBreakDuration });
+        for (let i = 0; i < phases.length; i++) {
+            if (phases[i].type === "focus") focusSeen++;
+            if (phases[i].type === phase && focusSeen === currentCycle) {
+                phaseIndex = i;
+                break;
             }
         }
 
-        let total = 0;
-        let currentCycle = 1;
+        const pastPhasesDuration = phases.slice(0, phaseIndex).reduce((sum, p) => sum + p.duration, 0);
+        const totalElapsed = pastPhasesDuration + elapsedSeconds + offset;
+
+        let remaining = totalElapsed;
+        let displayCycle = 1;
 
         for (let i = 0; i < phases.length; i++) {
-            const phase = phases[i];
-            total += phase.duration;
-            if (elapsed < total) {
-                const prevPhases = phases.slice(0, i);
-                const secondsBefore = prevPhases.reduce((sum, p) => sum + p.duration, 0);
-                const timeLeft = phase.duration - (elapsed - secondsBefore);
-                const progress = (elapsed - secondsBefore) / phase.duration;
+            const { type, duration } = phases[i];
 
-                if (phase.type === "focus") {
-                    currentCycle = 1 + prevPhases.filter(p => p.type === "focus").length;
-                }
+            if (type === "focus" && i !== 0) {
+                displayCycle++;
+            }
 
+            if (remaining < duration) {
+                const progress = remaining / duration;
                 return {
-                    phase: phase.type,
-                    currentCycle,
-                    timeLeft: Math.max(0, timeLeft),
+                    phase: type,
+                    currentCycle: displayCycle,
+                    timeLeft: duration - remaining,
                     progress: Math.min(1, Math.max(0, progress)),
                 };
             }
+
+            remaining -= duration;
         }
 
-        return null;
-    }, [session, now]);
+        return {
+            phase: phases[phases.length - 1].type,
+            currentCycle: repetitions,
+            timeLeft: 0,
+            progress: 1,
+        };
+    }, [session, offset]);
 
     return simulated;
 };

@@ -43,8 +43,7 @@ export const usePomodoroSession = () => {
                     focusDuration: pomodoroSession?.focusDuration,
                     shortBreakDuration: pomodoroSession?.shortBreakDuration,
                     longBreakDuration: pomodoroSession?.longBreakDuration,
-                    repetitions: pomodoroSession?.repetitions,
-
+                    repetitions: pomodoroSession?.repetitions
                 }
                 : null;
 
