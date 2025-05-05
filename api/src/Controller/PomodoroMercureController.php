@@ -25,6 +25,13 @@ class PomodoroMercureController extends AbstractController
 
 
 
+
+
+
+
+
+
+
     #[Route('/api/mercure/token', name: 'mercure_token')]
     public function token(MercureSubscriberTokenGenerator $generator): JsonResponse
     {
