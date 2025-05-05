@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy via SSH
         run: |
-          ssh -o StrictHostKeyChecking=no root@${{ SSH_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.SSH_IP }} << 'EOF'
             cd /var/www/pomodoro
             git pull origin main
             composer install --no-interaction --no-dev --optimize-autoloader
