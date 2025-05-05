@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import MainAuth from "@/components/authentification/auth";
 import { Error } from "@/components/ui/error";
@@ -13,7 +13,7 @@ interface ApiViolation {
     message: string;
 }
 
-export default function RegisterPage() {
+function RegisterFormContent() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -83,41 +83,45 @@ export default function RegisterPage() {
             setFormError("Erreur réseau.");
         }
     };
-
+    return (
+        <>
+            <form className="my-5">
+                <Error message={formError || ""} />
+                <Input
+                    type="text"
+                    id="email"
+                    placeholder="thibault@gmail.com"
+                    value={email}
+                    label="Email"
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <Input
+                    type="password"
+                    id="password"
+                    placeholder="Mot de passe"
+                    label="Mot de passe"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <Input
+                    type="password"
+                    id="confirm-password"
+                    placeholder="Répéter le mot de passe"
+                    label="Confirmer le mot de passe"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <Button onClick={handleRegister} className="mt-5">
+                    Register
+                </Button>
+            </form>
+        </>
+    )
+}
+export default function RegisterPage() {
     return (
         <MainAuth>
-            <Suspense fallback={<div>Chargement...</div>}>
-                <form className="my-5">
-                    <Error message={formError || ""} />
-                    <Input
-                        type="text"
-                        id="email"
-                        placeholder="thibault@gmail.com"
-                        value={email}
-                        label="Email"
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <Input
-                        type="password"
-                        id="password"
-                        placeholder="Mot de passe"
-                        label="Mot de passe"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <Input
-                        type="password"
-                        id="confirm-password"
-                        placeholder="Répéter le mot de passe"
-                        label="Confirmer le mot de passe"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                    <Button onClick={handleRegister} className="mt-5">
-                        Register
-                    </Button>
-                </form>
-            </Suspense>
+            <RegisterFormContent />
         </MainAuth>
     );
 }

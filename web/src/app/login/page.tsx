@@ -1,7 +1,7 @@
 "use client"
 
 import { useSearchParams } from "next/navigation"
-import { Suspense, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Error } from "@/components/ui/error"
 import { Input } from "@/components/ui/input"
@@ -72,9 +72,8 @@ function LoginFormContent() {
 export default function LoginPage() {
     return (
         <MainAuth>
-            <Suspense fallback={<div>Chargement...</div>}>
-                <LoginFormContent />
-            </Suspense>
+            <LoginFormContent />
+
         </MainAuth>
     )
 }

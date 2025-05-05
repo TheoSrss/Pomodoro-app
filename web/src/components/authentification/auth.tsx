@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Button } from "../ui/button";
 import { signIn } from "next-auth/react"
 import { FcGoogle } from "react-icons/fc";
@@ -21,8 +22,9 @@ export default function MainAuth({ children }: { children: React.ReactNode }) {
             </div>
             <h1 className="uppercase text-6xl text-center">Pomodoro</h1>
 
-            {children}
-
+            <Suspense fallback={<div>Chargement...</div>}>
+                {children}
+            </Suspense>
 
 
             <div className="flex items-center gap-2 my-6">
