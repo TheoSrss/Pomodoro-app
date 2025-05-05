@@ -10,14 +10,33 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use App\State\UserProcessor;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(
+    fields: ['email'],
+    groups: ['user:create']
+)]
 #[ApiResource(
     operations: [
-        new Get()
-    ]
+        new Get(),
+        new Post(
+            uriTemplate: '/register',
+            security: "is_granted('PUBLIC_ACCESS')",
+            validationContext: ['groups' => ['Default', 'user:create']],
+            normalizationContext: ['groups' => ['user:read', 'user:create']],
+            processor: UserProcessor::class
+        )
+    ],
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -32,7 +51,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\Email()]
+    #[Assert\NotBlank()]
+    #[Assert\Length(max: 100)]
+    #[Groups(['user:write', 'user:read'])]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -40,6 +63,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true)]
     private ?string $password = null;
+
+    #[Assert\NotBlank(groups: ['user:create'])]
+    #[SerializedName('password')]
+    #[Assert\Length(min: 8)]
+    #[Assert\Regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/")]
+    #[Groups(['user:write'])]
+    private ?string $plainPassword = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $googleId = null;
@@ -175,6 +205,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->sessions->add($session);
             $session->setCreator($this);
         }
+
+        return $this;
+    }
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $password): static
+    {
+        $this->plainPassword = $password;
 
         return $this;
     }
