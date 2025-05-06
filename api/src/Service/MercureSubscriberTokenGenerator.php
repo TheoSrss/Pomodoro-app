@@ -20,7 +20,7 @@ class MercureSubscriberTokenGenerator
                     'subscribe' => [sprintf('/user/%d/session', $user->getId())],
                 ],
                 'iat' => time(),
-                'exp' => time() + 3600,
+                'exp' => time() + 1000000,
                 'sub' => $user->getUserIdentifier(),
             ],
             $this->secret,

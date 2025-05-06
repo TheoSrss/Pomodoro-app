@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\MercureSubscriberTokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,8 +31,11 @@ final class SecurityController extends AbstractController
     }
 
     #[Route('/api/oauth/check/{service}', name: 'auth_oauth_check', methods: ['GET', 'POST'])]
-    public function connectCheck(string $service, Request $request): JsonResponse
-    {
+    public function connectCheck(
+        string $service,
+        Request $request,
+        MercureSubscriberTokenGenerator $generator
+    ): JsonResponse {
         try {
             $data = json_decode($request->getContent(), true);
             if (!isset($data['access_token'])) {
@@ -46,6 +50,7 @@ final class SecurityController extends AbstractController
                 'user' => [
                     'id' => $infos['user']->getId(),
                     'email' => $infos['user']->getEmail(),
+                    'jwtSubscriber' => $generator->createTokenForUser($infos['user'])
                 ]
             ]);
         } catch (\Throwable $e) {

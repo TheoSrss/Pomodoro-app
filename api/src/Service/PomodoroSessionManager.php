@@ -115,7 +115,7 @@ class PomodoroSessionManager
             $this->busForCounter->dispatch(new UpdatePomodoroTime($session->getId()));
         }
 
-        $this->publisher->publish($session, PomodoroSessionAction::START);
+        $this->publisher->publish($session, PomodoroSessionAction::PAUSE);
         return $session;
     }
 
@@ -129,7 +129,7 @@ class PomodoroSessionManager
         $session->setIsAborted(true);
 
         $this->em->flush();
-        $this->publisher->publish($session, PomodoroSessionAction::START);
+        $this->publisher->publish($session, PomodoroSessionAction::ABORT);
         return $session;
     }
 

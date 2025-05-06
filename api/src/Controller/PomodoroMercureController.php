@@ -46,9 +46,8 @@ class PomodoroMercureController extends AbstractController
             'action' => $action->value,
             'session' => json_decode($sessionData, true),
         ]);
-
         $update = new Update(
-            sprintf("/pomodoro/3", $session->getId()),
+            sprintf("/pomodoro/%s", $session->getCreator()->getId()),
             $payload
         );
         $this->hub->publish($update);
