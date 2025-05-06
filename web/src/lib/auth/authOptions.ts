@@ -3,7 +3,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
-import api from "@/lib/api"; // ky instance
+import api from "@/lib/api";
 
 export const authOptions: NextAuthOptions = {
     pages: {
@@ -27,7 +27,11 @@ export const authOptions: NextAuthOptions = {
                         })
                         .json<{
                             token: string;
-                            user: { id: string; email: string };
+                            user: {
+                                id: string,
+                                email: string,
+                                jwtSubscriber: string;
+                            };
                         }>();
 
                     if (data.token) {
@@ -35,6 +39,7 @@ export const authOptions: NextAuthOptions = {
                             id: data.user.id,
                             email: data.user.email,
                             token: data.token,
+                            jwtSubscriber: data.user.jwtSubscriber,
                         };
                     }
 
@@ -63,9 +68,12 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async jwt({ account, token, user }) {
             if (user && "token" in user) {
+                const customUser = user as CustomUser;
                 token.accessToken = user.token;
                 token.id = user.id;
                 token.email = user.email;
+                token.jwtSubscriber = customUser.jwtSubscriber;
+
                 return token;
             }
 
@@ -77,14 +85,18 @@ export const authOptions: NextAuthOptions = {
                         })
                         .json<{
                             token: string;
-                            user: { id: string; email: string };
+                            user: {
+                                id: string,
+                                email: string,
+                                jwtSubscriber: string
+                            };
                         }>();
 
                     token.accessToken = data.token;
                     token.id = data.user?.id;
                     token.email = data.user?.email;
-                } catch (error) {
-                    console.error("Google OAuth error:", error);
+                    token.jwtSubscriber = data.user?.jwtSubscriber;
+                } catch {
                     throw new Error("Échec lors de l'échange du token Google");
                 }
             }
@@ -98,6 +110,7 @@ export const authOptions: NextAuthOptions = {
                     id: token.id as string,
                     email: token.email as string,
                     token: token.accessToken as string,
+                    jwtSubscriber: token.jwtSubscriber as string
                 };
             }
             return session;

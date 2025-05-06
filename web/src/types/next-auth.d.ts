@@ -5,6 +5,7 @@ type CustomUser = {
     id: string;
     email: string;
     token: string;
+    jwtSubscriber: string;
 };
 
 declare module "next-auth" {
@@ -18,5 +19,6 @@ declare module "next-auth" {
         accessToken?: string;
         id: string;
         email: string;
+        jwtSubscriber: string
     }
 }

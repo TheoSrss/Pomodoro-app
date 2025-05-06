@@ -112,7 +112,7 @@ function RegisterFormContent() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 <Button onClick={handleRegister} className="mt-5">
-                    Register
+                    Sign in
                 </Button>
             </form>
         </>

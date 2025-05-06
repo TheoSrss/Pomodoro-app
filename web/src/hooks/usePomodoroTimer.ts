@@ -54,7 +54,6 @@ export const usePomodoroTimer = (session: PomodoroSession | null): Simulated | n
             };
         });
 
-        console.log(phases)
         let phaseIndex = -1;
         let focusSeen = 0;
 

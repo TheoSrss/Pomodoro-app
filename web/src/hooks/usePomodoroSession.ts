@@ -4,6 +4,7 @@ import { PomodoroSession } from "@/types/pomodoroSession";
 import { mapApiToPomodoroSession, createEmptyPomodoroSession, ApiPomodoroSession, } from "@/lib/mappers/mapPomodoroSession";
 import api from "@/lib/api";
 import { HTTPError } from "ky";
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 export type Action = "create" | "start" | "pause" | "abort";
 
@@ -12,7 +13,6 @@ export const usePomodoroSession = () => {
     const { data: session } = useSession();
     const [pomodoroSession, setPomodoroSession] = useState<PomodoroSession | null>(null);
     const [loading, setLoading] = useState(true);
-
 
     const fetchSession = useCallback(async () => {
         if (!session?.accessToken) return;
@@ -70,6 +70,39 @@ export const usePomodoroSession = () => {
     useEffect(() => {
         if (session?.accessToken) fetchSession();
     }, [session?.accessToken, fetchSession]);
+
+    useEffect(() => {
+        if (!session?.user?.jwtSubscriber) return;
+
+        const topic = `/pomodoro/${session.user.id}`;
+        const url = new URL(process.env.NEXT_PUBLIC_MERCURE_URL!);
+        url.searchParams.append("topic", topic);
+
+        const eventSource = new EventSourcePolyfill(url.toString(), {
+            headers: {
+                Authorization: `Bearer ${session.user.jwtSubscriber}`,
+            },
+            withCredentials: false,
+        });
+
+        eventSource.onmessage = (event: MessageEvent) => {
+            try {
+                const data = JSON.parse(event.data);
+                console.log("🔁 Mercure event received:", data);
+                if (data.action === "abort") {
+                    setPomodoroSession(createEmptyPomodoroSession(session.user.id));
+                } else {
+                    setPomodoroSession(mapApiToPomodoroSession(data.session));
+                }
+            } catch (error) {
+                console.error("❌ Error parsing Mercure message", error);
+            }
+        };
+
+        eventSource.onerror = () => {
+            console.error("❌ Mercure error");
+        };
+    }, [session?.user?.jwtSubscriber, session?.user?.id]);
 
     return {
         pomodoroSession,
