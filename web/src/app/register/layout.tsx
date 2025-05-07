@@ -1,7 +1,7 @@
 
 
 export const metadata = {
-    title: "Pomodoro - Login",
+    title: "Pomodoro - Register",
 };
 
 export default function General({

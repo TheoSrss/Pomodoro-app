@@ -6,7 +6,7 @@ export default function HeroSection() {
         <section className="pt-30 lg:pt-50">
             <h1 className="text-4xl font-bold mb-5 text-center">
                 Boostez votre productivité avec l&apos;application{" "}
-                <span className="inline-block mt-2 text-primary bg-slate-400 rounded-xl font-bold py-1 px-3">
+                <span className="inline-block mt-2 text-primary bg-slate-400 rounded-xl font-bold py-1 pl-3 pr-1">
                     Pomodoro.
                 </span>
             </h1>
