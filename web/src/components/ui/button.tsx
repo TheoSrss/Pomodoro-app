@@ -5,12 +5,14 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "py-5 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md  font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 w-full rounded-2xl shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#ffffff] border border-gray-200 hover:scale-[1.04] transition cursor-pointer ",
+  "py-5 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md  font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 w-full rounded-2xl shadow-[6px_6px_12px_#d1d9e6,_-6px_-6px_12px_#ffffff] hover:scale-[1.04] transition cursor-pointer ",
   {
     variants: {
       variant: {
         default:
           "",
+        primary:
+          "bg-primary"
       },
       size: {
         default: "h-9 px-8 has-[>svg]:px-3",

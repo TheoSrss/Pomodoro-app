@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Doto:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
   
   --color-beige: lch(94.45 0 0);
+  --color-primary: lch(90.07 19.38 142.05);
   --font-primary: "Doto", "serif";
 }
 
@@ -11,30 +12,12 @@
 :root {
 
   --background: #e8e7e8;
-  --foreground:rgb(12, 49, 16);
-  
-  /* --primary: lch(61.47 59.93 131.29 / 92.18%); */
-
-/* --color-prout : red; */
-
-
-
-
-  /* --input: #ffffff;
-  --muted: #e5e7eb;
-  --border: #d1d5db;
-  --shadow-light: 6px 6px 12px #d1d9e6, -6px -6px 12px #ffffff;
-  --radius: 1rem; */
-  /* test: red */
-}
+  --foreground:lch(12.23 19.38 142.05);
+  }
 
 .dark {
   --background: #2b2b31;
   --foreground: #303036;
-/* --color-prout : red; */
-  /* --primary:rgb(60, 100, 61);
-
-  --primary-foreground: #111827; */
 
   --input: #2d3748;
   --muted: #374151;
@@ -44,45 +27,30 @@
 }
 
 @layer base {
-  /* [data-theme='ocean'] {
-    --color-primary: #aab9ff;
-  }
-
-  [data-theme='rainforest'] {
-    --color-primary: #56d0a0;
-  }
-
-  [data-theme='candy'] {
-    --color-primary: #f9a8d4;
-  } */
   body {
     @apply bg-[var(--background)] text-[var(--foreground)] ;
-    /* font-family: var(--font-poppins), sans-serif; */
-
   }
 }
 
 /* LOADING */
 @keyframes pulse-dot {
   0% {
-    transform: scale(0.8);
-    background-color: #b3d4fc;
-    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+    transform: scale(0.5);
+    background-color: var(--color-primary);
   }
   50% {
     transform: scale(1.2);
-    background-color: #6793fb;
-    box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
+    background-color: var(--color-primary);
   }
   100% {
-    transform: scale(0.8);
-    background-color: #b3d4fc;
-    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+    transform: scale(0.5);
+    background-color: var(--color-primary);
   }
 }
 
 .animate-pulse-dot {
-  animation: pulse-dot 1.5s infinite ease-in-out;
+  animation: pulse-dot 1.7s infinite ease-in-out;
 }
+
 /* LOADING */
 

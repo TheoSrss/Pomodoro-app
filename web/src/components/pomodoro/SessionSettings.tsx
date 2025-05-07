@@ -20,7 +20,7 @@ export function SettingSlider({
 }: SettingSliderProps) {
     return (
         <div className="w-30 xl:w-40 flex flex-col gap-2 items-center bg-[#1e1e1e] rounded-2xl px-3 py-3 text-white shadow-[5px_5px_10px_rgb(25,25,25),-5px_-5px_10px_rgb(60,60,60)] text-center">
-            <span className="text-xs xl:text-lg text-gray-400">{label}</span>
+            <span className="text-xs xl:text-lg text-primary font-bold">{label}</span>
             <span className="text-s xl:text-xl font-semibold">
                 {Math.round(value)}{suffix}
             </span>
@@ -32,7 +32,7 @@ export function SettingSlider({
                 value={value}
                 disabled={disabled}
                 onChange={(e) => onChange(Math.round(Number(e.target.value)))}
-                className={`w-full accent-green-400 bg-zinc-300/20 appearance-none h-2 rounded-md ${disabled ? 'opacity-40 cursor-not-allowed' : ''
+                className={`w-full accent-primary bg-zinc-300/20 appearance-none h-2 rounded-md ${disabled ? 'opacity-40 cursor-not-allowed' : ''
                     }`}
             />
         </div>

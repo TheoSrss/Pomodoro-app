@@ -15,7 +15,7 @@ export const TimerProgress = ({ progress, timeLeft, currentCycle, phase }: Props
         <div className="relative w-full max-w-[400px] aspect-square flex items-center justify-center mx-auto px-4 my-10">
             <h2 className="mb-30  text-center text-sm sm:text-xl font-semibold">{textPhase}</h2>
 
-            <svg viewBox="0 0 100 100" className="absolute w-full h-full">
+            <svg viewBox="0 0 100 100" className="absolute w-full h-full text-primary">
                 {/* FOND : contour gris foncé */}
                 <rect
                     x="5"
@@ -38,7 +38,7 @@ export const TimerProgress = ({ progress, timeLeft, currentCycle, phase }: Props
                     rx="20"
                     ry="20"
                     fill="none"
-                    stroke="#b3eac2"
+                    stroke="currentColor"
                     strokeWidth="5"
                     strokeDasharray={pathLength}
                     strokeDashoffset={pathLength * (1 - progress)}
