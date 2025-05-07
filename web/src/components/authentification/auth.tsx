@@ -33,7 +33,7 @@ export default function MainAuth({ children }: { children: React.ReactNode }) {
                 <div className="flex-1 border-t border-gray-300 dark:border-zinc-700 shadow-sm blur-[1px] opacity-70" />
             </div>
 
-            <Button onClick={() => signIn("google", { callbackUrl: "/" })} className="mb-4">
+            <Button onClick={() => signIn("google", { callbackUrl: "/dashboard" })} className="mb-4">
                 <FcGoogle style={{ width: 25, height: 25 }} />
                 Google
             </Button>

@@ -36,7 +36,7 @@ function LoginFormContent() {
             email,
             password,
             redirect: true,
-            callbackUrl: "/",
+            callbackUrl: "/dashboard",
         })
     }
 
@@ -73,7 +73,6 @@ export default function LoginPage() {
     return (
         <MainAuth>
             <LoginFormContent />
-
         </MainAuth>
     )
 }
