@@ -7,6 +7,7 @@ import { useSelectedLayoutSegment } from "next/navigation";
 import * as React from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 interface NavProps {
   items?: {
@@ -24,15 +25,15 @@ function SignInSignUpButtons() {
         href="/login"
         className={buttonVariants({ variant: "default" })}
       >
-        Sign In
+        Login
       </Link>
 
-      <Link
+      {/* <Link
         href='/register'
         className={buttonVariants({ variant: "default" })}
       >
         Sign Up
-      </Link>
+      </Link> */}
     </>
   );
 }
@@ -64,8 +65,8 @@ function AuthButtons() {
 
 function MobileItems(props: NavProps) {
   return (
-    <div className="fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 animate-in slide-in-from-bottom-80 md:hidden">
-      <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
+    <div className="bg-red- fixed inset-0 top-16 z-40 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 animate-in slide-in-from-bottom-80 md:hidden">
+      <div className="relative z-10 grid gap-6 rounded-md bg-beige p-4 text-popover-foreground shadow-md ">
         <nav className="grid grid-flow-row auto-rows-max text-sm">
           {props.items?.map((item, index) => (
             <Link
@@ -121,7 +122,7 @@ export function LandingPageHeader(props: NavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
 
   return (
-    <header className="fixed w-full z-50 bg-background/80 px-6 md:px-10 backdrop-blur m-2">
+    <header className="fixed w-full z-50 bg-background/80 px-6 md:px-10 backdrop-blur ">
       <div className="flex h-18 items-center justify-between py-4">
         <div className="flex items-center gap-4 md:gap-10">
           {/* <Logo className="hidden md:flex" /> */}
@@ -144,7 +145,12 @@ export function LandingPageHeader(props: NavProps) {
 
           {showMobileMenu && props.items && <MobileItems items={props.items} />}
         </div>
-
+        <div className="absolute left-1/2 -translate-x-1/2 text-4xl font-bold">
+          <Link href="/dashboard" className="flex flex-row items-center ">
+            <Image width={50} height={50} src="/pomo.png" alt="Pomo logo" className="mr-2" />
+            <h1 className="mt-2">POMODORO</h1>
+          </Link>
+        </div>
         <div className="flex gap-4 items-center">
           {/* <ColorModeSwitcher /> */}
           <nav className="gap-4 items-center hidden md:flex">

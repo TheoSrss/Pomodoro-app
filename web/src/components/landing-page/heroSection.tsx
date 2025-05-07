@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 
 export default function HeroSection() {
     return (
-        <section className="pt-50">
+        <section className="pt-30 lg:pt-50">
             <h1 className="text-4xl font-bold mb-5">
                 Boostez votre productivité avec l&apos;application Pomodoro.
             </h1>
