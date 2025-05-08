@@ -7,7 +7,7 @@ import { useSelectedLayoutSegment } from "next/navigation";
 import * as React from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
+import Logo from "../logo";
 
 interface NavProps {
   items?: {
@@ -125,10 +125,7 @@ export function LandingPageHeader(props: NavProps) {
     <header className="fixed w-full z-50 bg-background/80 px-6 md:px-10 backdrop-blur ">
       <div className="flex h-18 items-center justify-between py-4">
         <div className="flex items-center gap-4 md:gap-10">
-          {/* <Logo className="hidden md:flex" /> */}
-
           {props.items?.length ? <DesktopItems items={props.items} /> : null}
-
           <Button
             className="space-x-2 md:hidden"
             size="icon"
@@ -140,19 +137,12 @@ export function LandingPageHeader(props: NavProps) {
               <Menu className="h-6 w-6" />
             )}
           </Button>
-
-          {/* <Logo className="md:hidden" /> */}
-
           {showMobileMenu && props.items && <MobileItems items={props.items} />}
         </div>
         <div className="absolute left-1/2 -translate-x-1/2 text-4xl font-bold">
-          <Link href="/dashboard" className="flex flex-row items-center ">
-            <Image width={50} height={50} src="/pomo.png" alt="Pomo logo" className="mr-2" />
-            <h1 className="mt-2 ">POMODORO</h1>
-          </Link>
+          <Logo />
         </div>
         <div className="flex gap-4 items-center">
-          {/* <ColorModeSwitcher /> */}
           <nav className="gap-4 items-center hidden md:flex">
             <AuthButtons />
           </nav>

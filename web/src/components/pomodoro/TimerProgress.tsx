@@ -25,7 +25,7 @@ export const TimerProgress = ({ progress, timeLeft, currentCycle, phase }: Props
                     rx="20"
                     ry="20"
                     fill="none"
-                    stroke="#2e2e2e"
+                    stroke="#1d293d"
                     strokeWidth="10"
                 />
 

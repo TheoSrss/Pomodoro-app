@@ -32,6 +32,7 @@ export function Pomodoro() {
                     onPause={() => performSessionAction('pause')}
                     onAbort={() => performSessionAction('abort')}
                     isStart={!!pomodoroSession.phaseStartedAt}
+                    isPause={!!pomodoroSession.isPaused}
                 />
             </div>
         );

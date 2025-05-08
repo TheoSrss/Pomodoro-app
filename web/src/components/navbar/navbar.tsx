@@ -1,8 +1,7 @@
-import Link from "next/link"
 import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
-import Image from "next/image";
+import Logo from "../logo";
 
 function NavBar() {
 
@@ -15,12 +14,7 @@ function NavBar() {
                 </svg>
             </Button>
             {/* </Link> */}
-            <div className="absolute left-1/2 -translate-x-1/2 text-4xl font-bold">
-                <Link href="/dashboard" className="flex flex-row items-center ">
-                    <Image width={50} height={50} src="/pomo.png" alt="Pomo logo" className="mr-2" />
-                    <h1 className="mt-2 ">POMODORO</h1>
-                </Link>
-            </div>
+            <Logo url='dashboard' />
             <div>
                 <Button
                     onClick={() => signOut({ callbackUrl: "/login" })}

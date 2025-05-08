@@ -19,7 +19,7 @@ export function SettingSlider({
     onChange,
 }: SettingSliderProps) {
     return (
-        <div className="w-30 xl:w-40 flex flex-col gap-2 items-center bg-[#1e1e1e] rounded-2xl px-3 py-3 text-white shadow-[5px_5px_10px_rgb(25,25,25),-5px_-5px_10px_rgb(60,60,60)] text-center">
+        <div className="w-30 xl:w-40 flex flex-col gap-2 items-center bg-slate-800 rounded-2xl px-3 py-3 text-white  text-center">
             <span className="text-xs xl:text-lg text-primary font-bold">{label}</span>
             <span className="text-s xl:text-xl font-semibold">
                 {Math.round(value)}{suffix}
