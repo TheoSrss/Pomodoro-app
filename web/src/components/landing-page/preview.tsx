@@ -11,11 +11,12 @@ export default function Preview() {
                 </div>
                 <div className="rounded-xl overflow-hidden mt-2 border border-gray-200">
                     <Image
-                        width={100}
-                        height={100}
+                        width={3168}
+                        height={1980}
                         src="/preview.png"
                         alt="Aperçu de l'application Pomodoro"
-                        className="w-full"
+                        className="w-full h-auto"
+                        priority
                     />
                 </div>
             </div>
