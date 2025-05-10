@@ -1,4 +1,5 @@
 import { PomodoroSession } from "@/types/pomodoroSession";
+import { useTranslations } from "next-intl";
 
 type SettingSliderProps = {
     label: string;
@@ -46,11 +47,12 @@ export function SessionSettings({
     onChange: (field: string, value: number) => void;
 }) {
     const disabled = !!session.startedAt;
+    const t = useTranslations('Pomodoro');
 
     return (
         <div className="grid grid-cols-2 justify-items-center  xl:grid-cols-4 gap-6 my-10 w-full max-w-5xl mx-auto">
             <SettingSlider
-                label="Focus"
+                label={t('focus')}
                 value={session.focusDuration / 60}
                 min={5}
                 max={120}
@@ -60,7 +62,7 @@ export function SessionSettings({
             />
 
             <SettingSlider
-                label="Short break"
+                label={t('shortBreak')}
                 value={session.shortBreakDuration / 60}
                 min={1}
                 max={30}
@@ -70,7 +72,7 @@ export function SessionSettings({
             />
 
             <SettingSlider
-                label="Long break"
+                label={t('longBreak')}
                 value={session.longBreakDuration / 60}
                 min={5}
                 max={60}
@@ -80,7 +82,7 @@ export function SessionSettings({
             />
 
             <SettingSlider
-                label="Cycles"
+                label={t('cycles')}
                 value={session.repetitions}
                 min={1}
                 max={10}

@@ -7,6 +7,7 @@ import { Error } from "@/components/ui/error";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 interface ApiViolation {
     propertyPath: string;
@@ -19,20 +20,21 @@ function RegisterFormContent() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [formError, setFormError] = useState<string | null>(null);
     const searchParams = useSearchParams();
-
     const errorSearch = searchParams.get("error");
+
+    const t = useTranslations("RegisterPage");
 
     useEffect(() => {
         if (errorSearch === "CredentialsSignin") {
-            setFormError("Email ou mot de passe incorrect.");
+            setFormError(t("errors.CredentialsSignin"));
         } else if (errorSearch === "expired") {
-            setFormError("Session expirée.");
+            setFormError(t("errors.expired"));
         } else if (errorSearch) {
-            setFormError("Une erreur est survenue. Veuillez réessayer.");
+            setFormError(t("errors.default"));
         } else {
             setFormError(null);
         }
-    }, [errorSearch]);
+    }, [errorSearch, t]);
 
     function isPasswordValid(password: string): boolean {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -44,11 +46,12 @@ function RegisterFormContent() {
         setFormError(null);
 
         if (!isPasswordValid(password)) {
-            setFormError("Mot de passe : au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
+            setFormError(t("errors.passwordInvalid"));
             return;
         }
+
         if (password !== confirmPassword) {
-            setFormError("Les mots de passe ne correspondent pas.");
+            setFormError(t("errors.passwordMismatch"));
             return;
         }
 
@@ -65,7 +68,7 @@ function RegisterFormContent() {
                 if (res.status === 422 && data.violations) {
                     const violation = data.violations.find((v: ApiViolation) => v.propertyPath === "email");
                     if (violation) {
-                        setFormError(violation.propertyPath + ' : ' + violation.message);
+                        setFormError(violation.propertyPath + " : " + violation.message);
                         return;
                     }
                 }
@@ -78,46 +81,46 @@ function RegisterFormContent() {
                 password,
                 redirect: true,
                 callbackUrl: "/",
-            })
+            });
         } catch {
-            setFormError("Erreur réseau.");
+            setFormError(t("errors.network"));
         }
     };
+
     return (
-        <>
-            <form className="my-5">
-                <Error message={formError || ""} />
-                <Input
-                    type="text"
-                    id="email"
-                    placeholder="thibault@gmail.com"
-                    value={email}
-                    label="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <Input
-                    type="password"
-                    id="password"
-                    placeholder="Mot de passe"
-                    label="Mot de passe"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <Input
-                    type="password"
-                    id="confirm-password"
-                    placeholder="Répéter le mot de passe"
-                    label="Confirmer le mot de passe"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <Button onClick={handleRegister} className="mt-5">
-                    Sign in
-                </Button>
-            </form>
-        </>
-    )
+        <form className="my-5">
+            <Error message={formError || ""} />
+            <Input
+                type="text"
+                id="email"
+                placeholder="gabin@gmail.com"
+                value={email}
+                label="Email"
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+                type="password"
+                id="password"
+                placeholder={t("placeholders.password")}
+                label={t("labels.password")}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <Input
+                type="password"
+                id="confirm-password"
+                placeholder={t("placeholders.confirmPassword")}
+                label={t("labels.confirmPassword")}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <Button onClick={handleRegister} className="mt-5">
+                {t("submit")}
+            </Button>
+        </form>
+    );
 }
+
 export default function RegisterPage() {
     return (
         <MainAuth>

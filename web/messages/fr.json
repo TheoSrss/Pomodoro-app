@@ -1,0 +1,76 @@
+{
+    "General": {
+        "login": "Connexion",
+        "logout": "Déconnexion",
+        "register": "Inscription"
+    },
+    "LandingPage": {
+        "Features": {
+            "title": "Fonctionnalités",
+            "f1": {
+                "title": "Personnalisation des minuteries",
+                "desc": "Réglez les durées des sessions/pauses."
+            },
+            "f2": {
+                "title": "Synchronisation temps réel",
+                "desc": "Votre minuterie est synchronisée en temps réel sur tous vos appareils."
+            },
+            "f3": {
+                "title": "Design responsive",
+                "desc": "Interface adaptée à tous les écrans."
+            },
+            "f4": {
+                "title": "Authentification sécurisée",
+                "desc": "Connexion via Email, Google, etc."
+            }
+        },
+        "HeroSection": {
+            "title": "Boostez votre productivité avec l'application ",
+            "info": "Une application synchronisé en temps réel et une interface simple et efficace.",
+            "start": "Commencer maintenant"
+        },
+        "Footer": {
+            "builtBy": "Développé par",
+            "sourceCode": "Le code source est disponible sur"
+        }
+    },
+    "LoginPage": {
+        "passwordPlaceholder": "motdepasse",
+        "passwordLabel": "Mot de passe",
+        "submit": "Se connecter",
+        "errors": {
+            "OAuthAccountNotLinked": "Un compte avec cette adresse existe déjà. Veuillez utiliser un autre moyen de connexion.",
+            "CredentialsSignin": "Email ou mot de passe incorrect.",
+            "expired": "Session expirée.",
+            "default": "Une erreur est survenue. Veuillez réessayer."
+        },
+        "continue": "Continuer avec"
+    },
+    "RegisterPage": {
+        "labels": {
+            "password": "Mot de passe",
+            "confirmPassword": "Confirmer le mot de passe"
+        },
+        "placeholders": {
+            "password": "Mot de passe",
+            "confirmPassword": "Répétez le mot de passe"
+        },
+        "submit": "S'inscrire",
+        "errors": {
+            "CredentialsSignin": "Email ou mot de passe incorrect.",
+            "expired": "Session expirée.",
+            "default": "Une erreur est survenue. Veuillez réessayer.",
+            "passwordInvalid": "Mot de passe : au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.",
+            "passwordMismatch": "Les mots de passe ne correspondent pas.",
+            "network": "Erreur réseau."
+        }
+    },
+    "Pomodoro": {
+        "focus": "Concentration",
+        "shortBreak": "Petite pause",
+        "longBreak": "Grande pause",
+        "cycles": "Cycles",
+        "start": "COMMENCER",
+        "resume": "REPRENDRE"
+    }
+}

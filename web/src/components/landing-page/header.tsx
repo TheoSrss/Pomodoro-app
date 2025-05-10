@@ -8,6 +8,7 @@ import * as React from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import Logo from "../logo";
+import { useTranslations } from "next-intl";
 
 interface NavProps {
   items?: {
@@ -19,21 +20,15 @@ interface NavProps {
 }
 
 function SignInSignUpButtons() {
+  const t = useTranslations('General');
+
   return (
     <>
       <Link
         href="/login"
         className={buttonVariants({ variant: "default" })}
       >
-        Login
-      </Link>
-
-      {/* <Link
-        href='/register'
-        className={buttonVariants({ variant: "default" })}
-      >
-        Sign Up
-      </Link> */}
+        {t('login')}  </Link>
     </>
   );
 }

@@ -1,0 +1,76 @@
+{
+    "General": {
+        "login": "Login",
+        "logout": "Logout",
+        "register": "Register"
+    },
+    "LandingPage": {
+        "Features": {
+            "title": "Features",
+            "f1": {
+                "title": "Timer customization",
+                "desc": "Set the duration of your focus and break sessions."
+            },
+            "f2": {
+                "title": "Real-time synchronization",
+                "desc": "Your timer is synchronized in real-time across all your devices."
+            },
+            "f3": {
+                "title": "Responsive design",
+                "desc": "Interface adapts to all screen sizes."
+            },
+            "f4": {
+                "title": "Secure authentication",
+                "desc": "Login via Email, Google, etc."
+            }
+        },
+        "HeroSection": {
+            "title": "Boost your productivity with the ",
+            "info": "A real-time synchronized app with a simple and efficient interface.",
+            "start": "Start now"
+        },
+        "Footer": {
+            "builtBy": "Built by",
+            "sourceCode": "Source code available on"
+        }
+    },
+    "LoginPage": {
+        "passwordPlaceholder": "password",
+        "passwordLabel": "Password",
+        "submit": "Log in",
+        "errors": {
+            "OAuthAccountNotLinked": "An account with this address already exists. Please use a different sign-in method.",
+            "CredentialsSignin": "Incorrect email or password.",
+            "expired": "Session expired.",
+            "default": "An error occurred. Please try again."
+        },
+        "continue": "Continue with"
+    },
+    "RegisterPage": {
+        "labels": {
+            "password": "Password",
+            "confirmPassword": "Confirm password"
+        },
+        "placeholders": {
+            "password": "Password",
+            "confirmPassword": "Repeat password"
+        },
+        "submit": "Sign up",
+        "errors": {
+            "CredentialsSignin": "Incorrect email or password.",
+            "expired": "Session expired.",
+            "default": "An error occurred. Please try again.",
+            "passwordInvalid": "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.",
+            "passwordMismatch": "Passwords do not match.",
+            "network": "Network error."
+        }
+    },
+    "Pomodoro": {
+        "focus": "Focus",
+        "shortBreak": "Short break",
+        "longBreak": "Long break",
+        "cycles": "Cycles",
+        "start": "START",
+        "resume": "RESUME"
+    }
+}

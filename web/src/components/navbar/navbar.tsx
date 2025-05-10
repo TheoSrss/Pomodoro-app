@@ -2,8 +2,10 @@ import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
 import Logo from "../logo";
+import { useTranslations } from "next-intl";
 
 function NavBar() {
+    const t = useTranslations('General');
 
     return (
         <div className="relative w-full px-5 xl:px-10 pt-2 pb-3 flex flex-row items-center justify-between bg-beige rounded-2xl shadow-[0.625rem_0.625rem_0.875rem_0_rgb(225,226,228),-0.5rem_-0.5rem_1.125rem_0_rgb(255,255,255)]">
@@ -20,7 +22,7 @@ function NavBar() {
                     onClick={() => signOut({ callbackUrl: "/login" })}
                     className="text-sm"
                 >
-                    <span className="hidden xl:inline">Log out</span>
+                    <span className="hidden xl:inline">{t('logout')}</span>
                     <LogOut className="fa inline xl:hidden" />
                 </Button>
             </div>

@@ -88,7 +88,6 @@ export const usePomodoroSession = () => {
         eventSource.onmessage = (event: MessageEvent) => {
             try {
                 const data = JSON.parse(event.data);
-                console.log("🔁 Mercure event received:", data);
                 if (data.action === "abort") {
                     setPomodoroSession(createEmptyPomodoroSession(session.user.id));
                 } else {

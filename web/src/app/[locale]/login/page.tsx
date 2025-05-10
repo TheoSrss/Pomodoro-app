@@ -7,8 +7,10 @@ import { Error } from "@/components/ui/error"
 import { Input } from "@/components/ui/input"
 import MainAuth from "@/components/authentification/auth"
 import { signIn } from "next-auth/react"
+import { useTranslations } from "next-intl"
 
 function LoginFormContent() {
+    const t = useTranslations('LoginPage');
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [formError, setFormError] = useState<string | null>(null)
@@ -18,17 +20,17 @@ function LoginFormContent() {
 
     useEffect(() => {
         if (errorSearch === "OAuthAccountNotLinked") {
-            setFormError("Un compte avec cette adresse existe déjà. Veuillez utiliser un autre moyen de connexion.")
+            setFormError(t("errors.OAuthAccountNotLinked"))
         } else if (errorSearch === "CredentialsSignin") {
-            setFormError("Email ou mot de passe incorrect.")
+            setFormError(t("errors.CredentialsSignin"))
         } else if (errorSearch === "expired") {
-            setFormError("Session expirée.")
+            setFormError(t("errors.expired"))
         } else if (errorSearch) {
-            setFormError("Une erreur est survenue. Veuillez réessayer.")
+            setFormError(t("errors.default"))
         } else {
             setFormError(null)
         }
-    }, [errorSearch])
+    }, [errorSearch, t])
 
     const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -47,7 +49,7 @@ function LoginFormContent() {
                 <Input
                     type="text"
                     id="email"
-                    placeholder="thibault@gmail.com"
+                    placeholder="gabin@gmail.com"
                     value={email}
                     label="Email"
                     onChange={(e) => setEmail(e.target.value)}
@@ -55,13 +57,13 @@ function LoginFormContent() {
                 <Input
                     type="password"
                     id="password"
-                    placeholder="mypassword"
-                    label="Password"
+                    placeholder={t("passwordPlaceholder")}
+                    label={t("passwordLabel")}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <Button onClick={handleLogin} className="mt-5">
-                    Log In
+                    {t('submit')}
                 </Button>
             </form>
 

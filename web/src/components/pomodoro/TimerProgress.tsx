@@ -1,5 +1,6 @@
 import { PomodoroPhase } from "@/types/pomodoroSession";
 import { TimerDisplay } from "./TimerDisplay";
+import { useTranslations } from "next-intl";
 
 type Props = {
     progress: number;
@@ -9,12 +10,12 @@ type Props = {
 };
 export const TimerProgress = ({ progress, timeLeft, currentCycle, phase }: Props) => {
     const pathLength = 320;
-    const textPhase = phase === "focus" ? "Focus" : phase === "long_break" ? "Big break" : "Short break";
+    const t = useTranslations('Pomodoro');
+    const textPhase = phase === "focus" ? t('focus') : phase === "long_break" ? t('longBreak') : t('shortBreak');
 
     return (
         <div className="relative w-full max-w-[400px] aspect-square flex items-center justify-center mx-auto px-4 my-10">
             <h2 className="mb-30  text-center text-sm sm:text-xl font-semibold">{textPhase}</h2>
-
             <svg viewBox="0 0 100 100" className="absolute w-full h-full text-primary">
                 {/* FOND : contour gris foncé */}
                 <rect
