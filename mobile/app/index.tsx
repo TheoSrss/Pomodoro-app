@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
 import Colors from '../constant/Colors';
+import { Link } from 'expo-router';
 
 export default function App() {
 
@@ -16,6 +17,15 @@ export default function App() {
             <StatusBar style="auto" />
             <Text style={{ fontFamily: 'Doto', fontSize: 40 }}>Texte régulier</Text>
             <Text style={{ fontFamily: 'DotoBold', fontSize: 90 }}>Texte gras</Text>
+
+            {/* <Card> */}
+            <Link href="/register">Register Page</Link>
+            {/* </ThemedCard> */}
+
+            {/* <ThemedCard> */}
+            <Link href="/login">Login</Link>
+            {/* </ThemedCard> */}
+            <Link href="/dashboard">Dashboard</Link>
 
         </View>
     );

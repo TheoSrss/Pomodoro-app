@@ -6,6 +6,7 @@ import Colors from '../constant/Colors';
 import { useFonts } from 'expo-font';
 import Loader from '../components/Loader';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { UserProvider } from '../context/UserContext';
 
 const RootLayout = () => {
 
@@ -19,10 +20,12 @@ const RootLayout = () => {
     if (!fontsLoaded) return <Loader />;
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-            <StatusBar style={colorScheme === 'dark' ? 'dark' : 'light'} />
-            <Slot />
-        </SafeAreaView>
+        <UserProvider>
+            <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+                <StatusBar style={colorScheme === 'dark' ? 'dark' : 'light'} />
+                <Slot />
+            </SafeAreaView>
+        </UserProvider>
     )
 }
 

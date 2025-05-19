@@ -1,5 +1,4 @@
 import { useRouter } from "expo-router";
-// import { useUser } from "../../hooks/useUser";
 import { useEffect } from "react";
 import Loader from "../Loader";
 import { useUser } from "../../hooks/useUser";
