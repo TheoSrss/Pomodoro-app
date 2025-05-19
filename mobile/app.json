@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "scheme": "Pomodoro",
+    "name": "Pomodoro",
+    "slug": "Pomodoro",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/pomo.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/pomo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.Pomodoro"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/pomo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.Pomodoro"
+    },
+    "web": {
+      "favicon": "./assets/pomofavicond.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ]
+  }
+}
