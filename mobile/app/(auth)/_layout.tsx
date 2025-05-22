@@ -1,14 +1,17 @@
 import { Slot } from 'expo-router';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import GuestOnly from '../../components/auth/GuestOnly';
 
 export default function AuthLayout() {
 
     return (
-        <SafeAreaView >
-            <StatusBar />
-            <Slot />
-        </SafeAreaView>
+        <GuestOnly>
+            <SafeAreaView >
+                <StatusBar />
+                <Slot />
+            </SafeAreaView>
+        </GuestOnly>
     );
 }
 

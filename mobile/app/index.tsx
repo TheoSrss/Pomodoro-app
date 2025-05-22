@@ -1,15 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { useFonts } from 'expo-font';
-import Colors from '../constant/Colors';
+import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
 
-export default function App() {
 
-    const [fontsLoaded] = useFonts({
-        Doto: require('../assets/fonts/Doto-Regular.ttf'),
-        DotoBold: require('../assets/fonts/Doto-Bold.ttf'),
-    });
+export default function App() {
 
     return (
         <View>
@@ -26,8 +20,7 @@ export default function App() {
             <Link href="/login">Login</Link>
             {/* </ThemedCard> */}
             <Link href="/dashboard">Dashboard</Link>
-
-        </View>
+        </View >
     );
 }
 

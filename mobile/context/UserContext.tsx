@@ -1,26 +1,24 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
+import { authService, AuthResponse } from '../services/auth';
+import { HTTPError } from 'ky';
+import { API_ERRORS } from '../services/config';
 
-type User = {
-    id: string;
-    email: string;
-};
+type User = AuthResponse['user'];
 
-// Type du contexte
 type UserContextType = {
     user: User | null;
     authCheck: boolean;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string) => Promise<void>;
-    logout: () => void;
+    logout: () => Promise<void>;
 };
 
-// Contexte vide initial
 export const UserContext = createContext<UserContextType>({
     user: null,
     authCheck: false,
     login: async () => { },
     register: async () => { },
-    logout: () => { },
+    logout: async () => { },
 });
 
 export function UserProvider({ children }: { children: ReactNode }) {
@@ -28,24 +26,44 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const [authCheck, setAuthCheck] = useState(false);
 
     async function login(email: string, password: string) {
-        // Simulation : utilisateur fake
-        const fakeUser = { id: '1', email };
-        setUser(fakeUser);
+        try {
+            const response = await authService.login({ email, password });
+            setUser(response.user);
+            setAuthCheck(true);
+        } catch (error) {
+            if (error instanceof HTTPError) {
+                const status = error.response?.status;
+                const message = API_ERRORS[status as keyof typeof API_ERRORS] || API_ERRORS.DEFAULT;
+                throw new Error(message);
+            }
+            throw new Error(API_ERRORS.DEFAULT);
+        }
     }
 
     async function register(email: string, password: string) {
-        // Simulation : création puis login
-        await login(email, password);
+        try {
+            const response = await authService.register({ email, password });
+            await login(email, password);
+        } catch (error) {
+            if (error instanceof HTTPError) {
+                const status = error.response?.status;
+                const message = API_ERRORS[status as keyof typeof API_ERRORS] || API_ERRORS.DEFAULT;
+                throw new Error(message);
+            }
+            throw new Error(API_ERRORS.DEFAULT);
+        }
     }
 
     async function logout() {
+        await authService.logout();
         setUser(null);
+        setAuthCheck(true);
     }
 
     async function getInitialUserValue() {
         try {
-            // Simulation : pas d'utilisateur
-            setUser(null);
+            // const currentUser = await authService.getCurrentUser();
+            // setUser(currentUser);
         } catch (error) {
             setUser(null);
         } finally {
@@ -58,7 +76,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }, []);
 
     return (
-        <UserContext.Provider value={{ user, authCheck, login, register, logout }}>
+        <UserContext.Provider value={{
+            user,
+            authCheck,
+            login,
+            register,
+            logout
+        }}>
             {children}
         </UserContext.Provider>
     );
