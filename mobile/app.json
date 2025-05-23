@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.Pomodoro"
+      "bundleIdentifier": "com.theosourisseau.pomodoro"
     },
     "android": {
       "adaptiveIcon": {
@@ -23,14 +23,15 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.Pomodoro"
+      "package": "com.theosourisseau.pomodoro"
     },
     "web": {
       "favicon": "./assets/pomofavicond.png"
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      "expo-web-browser"
     ]
   }
 }

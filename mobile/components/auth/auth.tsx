@@ -1,6 +1,8 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import Logo from '../../assets/pomo.png'
 import { Link, usePathname } from "expo-router";
+import { useEffect } from "react";
+import { makeRedirectUri, useAuthRequest, useAutoDiscovery } from "expo-auth-session";
 
 
 export default function MainAuth({ children }: { children: React.ReactNode }) {
@@ -8,6 +10,28 @@ export default function MainAuth({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
 
     const isLogin = pathname === '/login';
+
+    const discovery = useAutoDiscovery('https://accounts.google.com');
+    const [request, response, promptAsync] = useAuthRequest(
+        {
+            clientId: Platform.select({
+                ios: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+                // android: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+                // default: process.env.EXPO_PUBLIC_GOOGLE_EXPO_CLIENT_ID,
+            }),
+            scopes: ['openid', 'profile', 'email'],
+            redirectUri: makeRedirectUri({
+                native: 'com.theosourisseau.pomodoro:/oauthredirect',
+            }),
+        },
+        discovery
+    );
+    console.log('LA:', process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID)
+    useEffect(() => {
+        if (response?.type === 'success') {
+            const { code } = response.params;
+        }
+    }, [response]);
 
     return (
         <View style={styles.card}>
@@ -33,14 +57,14 @@ export default function MainAuth({ children }: { children: React.ReactNode }) {
                 <Text style={styles.dividerText}>Continuer avec</Text>
                 <View style={styles.divider} />
             </View>
-
-            <Pressable style={styles.loginButton}>
+            <Pressable onPress={() => promptAsync()} style={styles.loginButton} disabled={!request}>
                 <Image
-                    source={Logo}
+                    source={require('../../assets/google.png')}
                     style={styles.googleIcon}
                 />
                 <Text style={styles.loginText}>Google</Text>
             </Pressable>
+
         </View>
     )
 }
