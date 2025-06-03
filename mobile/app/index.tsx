@@ -1,10 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
+import { useUser } from '../hooks/useUser';
 
 
 export default function App() {
 
+    const { logout } = useUser();
     return (
         <View>
             <Text>Open up App.tsx to  working on your apps!</Text>
@@ -20,6 +22,10 @@ export default function App() {
             <Link href="/login">Login</Link>
             {/* </ThemedCard> */}
             <Link href="/dashboard">Dashboard</Link>
+
+            <Pressable onPress={logout} >
+                <Text >LOGOUT</Text>
+            </Pressable>
         </View >
     );
 }

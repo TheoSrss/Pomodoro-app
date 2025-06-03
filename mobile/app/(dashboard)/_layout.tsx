@@ -1,11 +1,11 @@
 import { Stack } from 'expo-router';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import GuestOnly from '../../components/auth/GuestOnly';
+import UserOnly from '../../components/auth/UserOnly';
 
 export default function AuthLayout() {
     return (
-        <GuestOnly>
+        <UserOnly>
             <SafeAreaView style={{ flex: 1 }}>
                 <StatusBar />
                 <Stack screenOptions={{
@@ -14,6 +14,6 @@ export default function AuthLayout() {
                 }}>
                 </Stack>
             </SafeAreaView>
-        </GuestOnly>
+        </UserOnly>
     );
 }

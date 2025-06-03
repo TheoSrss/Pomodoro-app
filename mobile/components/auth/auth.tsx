@@ -26,7 +26,6 @@ export default function MainAuth({ children }: { children: React.ReactNode }) {
         },
         discovery
     );
-    console.log('LA:', process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID)
     useEffect(() => {
         if (response?.type === 'success') {
             const { code } = response.params;

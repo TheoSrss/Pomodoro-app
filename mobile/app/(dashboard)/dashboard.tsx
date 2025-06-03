@@ -1,14 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React from 'react'
-import UserOnly from '../../components/auth/UserOnly'
-
+import { Pomodoro } from '../../components/pomodoro/pomodoro'
 const Dashboard = () => {
     return (
-        <UserOnly>
-            <View>
-                <Text>Dashboard</Text>
-            </View>
-        </UserOnly>
+        <View>
+            <Pomodoro />
+        </View>
     )
 }
 

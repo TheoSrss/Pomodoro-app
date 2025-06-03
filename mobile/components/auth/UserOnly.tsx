@@ -7,8 +7,6 @@ import { AuthResponse } from "../../services/auth";
 const UserOnly = ({ children }: { children: React.ReactNode }) => {
     const { user, authCheck } = useUser();
     const router = useRouter();
-    console.log("user:", user);
-
 
     useEffect(() => {
         if (authCheck && user === null) {

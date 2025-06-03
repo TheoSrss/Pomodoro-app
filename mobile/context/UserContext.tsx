@@ -1,20 +1,24 @@
 import { createContext, useEffect, useState, ReactNode } from 'react';
-import { authService, AuthResponse } from '../services/auth';
+import { AuthResponse, authService } from '../services/auth';
 import { HTTPError } from 'ky';
 import { API_ERRORS } from '../services/config';
-
-type User = AuthResponse['user'];
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CustomUser } from "../../web/src/types/next-auth";
 
 type UserContextType = {
-    user: User | null;
+    user: CustomUser | null;
+    jwt: string | null;
     authCheck: boolean;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
 };
 
+const USER_STORAGE_KEY = '@Pomodoro:userData';
+
 export const UserContext = createContext<UserContextType>({
     user: null,
+    jwt: null,
     authCheck: false,
     login: async () => { },
     register: async () => { },
@@ -22,13 +26,42 @@ export const UserContext = createContext<UserContextType>({
 });
 
 export function UserProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<CustomUser | null>(null);
+    const [jwt, setJwt] = useState<string | null>(null);
     const [authCheck, setAuthCheck] = useState(false);
+
+    const saveUserToStorage = async (userData: AuthResponse | null) => {
+        try {
+            if (userData) {
+                await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
+            } else {
+                await AsyncStorage.removeItem(USER_STORAGE_KEY);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la sauvegarde des données utilisateur:', error);
+        }
+    };
+
+    const loadUserFromStorage = async () => {
+        try {
+            const storedDataUser = await AsyncStorage.getItem(USER_STORAGE_KEY);
+            if (storedDataUser) {
+                const dataParsed = JSON.parse(storedDataUser);
+                setUser(dataParsed.user);
+                setJwt(dataParsed.token);
+            }
+            console.log(jwt, user);
+        } catch (error) {
+            console.error('Erreur lors du chargement des données utilisateur:', error);
+        }
+    };
 
     async function login(email: string, password: string) {
         try {
             const response = await authService.login({ email, password });
             setUser(response.user);
+            setJwt(response.token);
+            await saveUserToStorage(response);
             setAuthCheck(true);
         } catch (error) {
             if (error instanceof HTTPError) {
@@ -57,13 +90,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
     async function logout() {
         await authService.logout();
         setUser(null);
+        await saveUserToStorage(null);
         setAuthCheck(true);
     }
 
     async function getInitialUserValue() {
         try {
-            // const currentUser = await authService.getCurrentUser();
-            // setUser(currentUser);
+            await loadUserFromStorage();
         } catch (error) {
             setUser(null);
         } finally {
@@ -78,6 +111,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     return (
         <UserContext.Provider value={{
             user,
+            jwt,
             authCheck,
             login,
             register,

@@ -1,6 +1,7 @@
 import api from './api';
 import { API_ENDPOINTS } from './config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CustomUser } from "../../web/src/types/next-auth";
 
 export interface LoginRegisterCredentials {
     email: string;
@@ -9,11 +10,7 @@ export interface LoginRegisterCredentials {
 
 export interface AuthResponse {
     token: string;
-    user: {
-        id: string;
-        email: string;
-        jwtSubscriber: string
-    };
+    user: CustomUser
 }
 
 class AuthService {
@@ -47,7 +44,6 @@ class AuthService {
     async getCurrentUser(): Promise<AuthResponse> {
         try {
             const response = await api.get(API_ENDPOINTS.USER.PROFILE).json<AuthResponse>();
-            console.log(response);
 
             return response;
         } catch (error) {
