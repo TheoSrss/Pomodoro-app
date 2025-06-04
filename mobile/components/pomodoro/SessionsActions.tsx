@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import AppText from "../AppText";
 
 type SessionActionsProps = {
     isStart: boolean;
@@ -20,15 +21,15 @@ export function SessionActions({
             {isStart ? (
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.button} onPress={onPause}>
-                        <Text style={styles.buttonText}>{isPause ? "▶️ Reprendre" : "⏸️ Pause"}</Text>
+                        <AppText style={styles.buttonText}>{isPause ? "▶️ Reprendre" : "⏸️ Pause"}</AppText>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={onAbort}>
-                        <Text style={styles.buttonText}>⏹️ Stop</Text>
+                        <AppText style={styles.buttonText}>⏹️ Stop</AppText>
                     </TouchableOpacity>
                 </View>
             ) : (
                 <TouchableOpacity style={styles.button} onPress={onStart}>
-                    <Text style={styles.buttonText}>▶️ Démarrer</Text>
+                    <AppText style={styles.buttonText}>▶️ Démarrer</AppText>
                 </TouchableOpacity>
             )}
         </View>

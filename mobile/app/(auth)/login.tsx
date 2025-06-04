@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import {
-    View,
-    Text,
     TextInput,
     Pressable,
-    Image,
     StyleSheet,
 } from 'react-native';
 import { useUser } from '../../hooks/useUser';
 import MainAuth from '../../components/auth/auth';
 import { API_ERRORS } from '../../services/config';
 import { REGEX } from '../../constant/Regex';
+import AppText from '../../components/AppText';
 
 export default function LoginForm() {
     const [email, setEmail] = useState('');
@@ -45,8 +43,8 @@ export default function LoginForm() {
 
     return (
         <MainAuth>
-            {error && <Text style={styles.error}>{error}</Text>}
-            <Text style={styles.label}>Email</Text>
+            {error && <AppText style={styles.error}>{error}</AppText>}
+            <AppText style={styles.label}>Email</AppText>
             <TextInput
                 value={email}
                 onChangeText={setEmail}
@@ -55,7 +53,7 @@ export default function LoginForm() {
                 placeholderTextColor="#bbb"
             />
 
-            <Text style={styles.label}>Mot de passe</Text>
+            <AppText style={styles.label}>Mot de passe</AppText>
             <TextInput
                 value={password}
                 onChangeText={setPassword}
@@ -66,7 +64,7 @@ export default function LoginForm() {
             />
 
             <Pressable onPress={handleLogin} style={styles.loginButton}>
-                <Text style={styles.loginText}>Se connecter</Text>
+                <AppText style={styles.loginText}>Se connecter</AppText>
             </Pressable>
         </MainAuth>
     );
@@ -80,10 +78,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         textAlign: 'center',
         marginBottom: 12,
-        fontFamily: 'Doto',
     },
     label: {
-        fontFamily: 'Doto',
         fontSize: 14,
         marginTop: 10,
         marginBottom: 10,
@@ -94,12 +90,12 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         padding: 10,
         marginBottom: 10,
-        fontFamily: 'Doto',
         fontSize: 16,
         shadowColor: '#ccc',
         shadowOffset: { width: -2, height: -2 },
         shadowOpacity: 0.3,
         shadowRadius: 3,
+        fontFamily: 'Doto'
     },
 
     loginButton: {
@@ -118,7 +114,7 @@ const styles = StyleSheet.create({
 
     },
     loginText: {
-        fontFamily: 'DotoBold',
+        fontWeight: 900,
         fontSize: 16,
     },
 });

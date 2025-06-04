@@ -1,14 +1,19 @@
-import { StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import React from 'react'
-import { Pomodoro } from '../../components/pomodoro/pomodoro'
+import Pomodoro from '../../components/pomodoro/pomodoro'
 const Dashboard = () => {
     return (
-        <View>
+        <ScrollView contentContainerStyle={styles.container}>
             <Pomodoro />
-        </View>
+        </ScrollView>
     )
 }
 
 export default Dashboard
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flexGrow: 1,
+        padding: 16,
+    }
+})

@@ -1,8 +1,9 @@
-import { Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import Logo from '../../assets/pomo.png'
+import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
+import Logo from "../../assets/pomo.png"
 import { Link, usePathname } from "expo-router";
 import { useEffect } from "react";
 import { makeRedirectUri, useAuthRequest, useAutoDiscovery } from "expo-auth-session";
+import AppText from "../AppText";
 
 
 export default function MainAuth({ children }: { children: React.ReactNode }) {
@@ -36,10 +37,10 @@ export default function MainAuth({ children }: { children: React.ReactNode }) {
         <View style={styles.card}>
             <View style={styles.tabs}>
                 <Link href="/login">
-                    <Text style={[styles.tab, isLogin && styles.tabActive]}>Connexion</Text>
+                    <AppText style={[styles.tab, isLogin && styles.tabActive]}>Connexion</AppText>
                 </Link>
                 <Link href="/register">
-                    <Text style={[styles.tab, !isLogin && styles.tabActive]}>Inscription</Text>
+                    <AppText style={[styles.tab, !isLogin && styles.tabActive]}>Inscription</AppText>
                 </Link>
             </View>
             <View style={[styles.tabs, { alignItems: 'center' }]}>
@@ -48,12 +49,12 @@ export default function MainAuth({ children }: { children: React.ReactNode }) {
                     style={styles.logo}
                     resizeMode="contain"
                 />
-                <Text style={styles.title}>POMODORO</Text>
+                <AppText style={styles.title}>POMODORO</AppText>
             </View>
             {children}
             <View style={styles.dividerContainer}>
                 <View style={styles.divider} />
-                <Text style={styles.dividerText}>Continuer avec</Text>
+                <AppText style={styles.dividerText}>Continuer avec</AppText>
                 <View style={styles.divider} />
             </View>
             <Pressable onPress={() => promptAsync()} style={styles.loginButton} disabled={!request}>
@@ -61,7 +62,7 @@ export default function MainAuth({ children }: { children: React.ReactNode }) {
                     source={require('../../assets/google.png')}
                     style={styles.googleIcon}
                 />
-                <Text style={styles.loginText}>Google</Text>
+                <AppText style={styles.loginText}>Google</AppText>
             </Pressable>
 
         </View>
@@ -89,18 +90,16 @@ const styles = StyleSheet.create({
     },
     tab: {
         fontSize: 18,
-        fontFamily: 'Doto',
         color: '#999',
     },
     tabActive: {
-        fontFamily: 'DotoBold',
         color: '#222',
+        fontWeight: 700
     },
     logo: {
         alignSelf: 'center',
         width: 60,
-        height: 60,
-        // marginBottom: 20,
+        height: 60
     },
 
     loginButton: {
@@ -119,7 +118,7 @@ const styles = StyleSheet.create({
 
     },
     loginText: {
-        fontFamily: 'DotoBold',
+        fontWeight: 900,
         fontSize: 16,
     },
     dividerContainer: {
@@ -135,18 +134,15 @@ const styles = StyleSheet.create({
     dividerText: {
         marginHorizontal: 10,
         color: '#999',
-        fontFamily: 'Doto',
     },
     googleIcon: {
         width: 20,
         height: 20,
     },
     googleText: {
-        fontFamily: 'Doto',
         fontSize: 16,
     },
     title: {
-        fontFamily: 'Doto',
         fontSize: 30,
         color: '#444',
     },

@@ -1,10 +1,10 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Pressable, StyleSheet, TextInput } from 'react-native'
 import React, { useState } from 'react'
-import { Link } from 'expo-router'
 import { useUser } from '../../hooks/useUser';
 import MainAuth from '../../components/auth/auth';
 import { API_ERRORS } from '../../services/config';
 import { REGEX } from '../../constant/Regex';
+import AppText from '../../components/AppText';
 
 const Register = () => {
     const [email, setEmail] = useState("");
@@ -40,8 +40,8 @@ const Register = () => {
 
     return (
         <MainAuth>
-            {error && <Text style={styles.error}>{error}</Text>}
-            <Text style={styles.label}>Email</Text>
+            {error && <AppText style={styles.error}>{error}</AppText>}
+            <AppText style={styles.label}>Email</AppText>
             <TextInput
                 value={email}
                 onChangeText={setEmail}
@@ -49,7 +49,7 @@ const Register = () => {
                 style={styles.input}
                 placeholderTextColor="#bbb"
             />
-            <Text style={styles.label}>Mot de passe</Text>
+            <AppText style={styles.label}>Mot de passe</AppText>
             <TextInput
                 value={password}
                 onChangeText={setPassword}
@@ -58,9 +58,9 @@ const Register = () => {
                 style={styles.input}
                 placeholderTextColor="#bbb"
             />
-            <Text style={styles.label}>
+            <AppText style={styles.label}>
                 Répétez le mot de passe
-            </Text>
+            </AppText>
             <TextInput
                 placeholder='motdepasse2'
                 value={confirmPassword}
@@ -71,7 +71,7 @@ const Register = () => {
 
             />
             <Pressable onPress={handleRegister} style={styles.loginButton}>
-                <Text style={styles.loginText}>S'inscrire</Text>
+                <AppText style={styles.loginText}>S'inscrire</AppText>
             </Pressable>
         </MainAuth>
     )
@@ -88,11 +88,9 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 8,
         textAlign: 'center',
-        marginBottom: 12,
-        fontFamily: 'Doto',
+        marginBottom: 12
     },
     label: {
-        fontFamily: 'Doto',
         fontSize: 14,
         marginTop: 10,
         marginBottom: 10,
@@ -127,7 +125,6 @@ const styles = StyleSheet.create({
 
     },
     loginText: {
-        fontFamily: 'DotoBold',
         fontSize: 16,
     },
 });

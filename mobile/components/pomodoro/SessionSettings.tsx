@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import Slider from "@react-native-community/slider";
 import { PomodoroSession } from "../../web/src/types/pomodoroSession";
+import AppText from "../AppText";
 
 type SettingSliderProps = {
     label: string;
@@ -23,10 +24,11 @@ function SettingSlider({
 }: SettingSliderProps) {
     return (
         <View style={styles.sliderContainer}>
-            <Text style={styles.sliderLabel}>{label}</Text>
-            <Text style={styles.sliderValue}>{Math.round(value)}{suffix}</Text>
+            <AppText style={styles.sliderLabel}>{label}</AppText>
+            <AppText style={styles.sliderValue}>{Math.round(value)}{suffix}</AppText>
             <Slider
                 style={{ width: "100%" }}
+
                 minimumValue={min}
                 maximumValue={max}
                 step={1}
@@ -96,17 +98,15 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         justifyContent: "center",
-        gap: 16,
-        marginVertical: 24,
-        // backgroundColor: 'red'
+        gap: 10
     },
     sliderContainer: {
-        width: 120,
-        backgroundColor: "#1e293b",
-        borderRadius: 16,
-        padding: 12,
+        width: 170,
+        backgroundColor: "#1d293d",
+        borderRadius: 20,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
         alignItems: "center",
-        margin: 8,
     },
     sliderLabel: {
         color: "#cbebcb",
@@ -114,8 +114,9 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     sliderValue: {
+        color: '#e0dfe8',
         fontSize: 18,
         fontWeight: "600",
-        marginBottom: 8,
+        marginTop: 15
     },
 });

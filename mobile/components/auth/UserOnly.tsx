@@ -2,7 +2,6 @@ import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import Loader from "../Loader";
 import { useUser } from "../../hooks/useUser";
-import { AuthResponse } from "../../services/auth";
 
 const UserOnly = ({ children }: { children: React.ReactNode }) => {
     const { user, authCheck } = useUser();
