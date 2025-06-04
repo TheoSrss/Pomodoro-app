@@ -53,7 +53,7 @@ export const TimerProgress = ({ progress, timeLeft, currentCycle, phase }: Props
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        flex: 0.8,
+        flex: 1,
         justifyContent: "center",
         alignItems: "center",
     },

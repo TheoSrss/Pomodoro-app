@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         justifyContent: "center",
-        gap: 10
+        gap: 10,
+        marginBottom: 40
     },
     sliderContainer: {
         width: 170,
