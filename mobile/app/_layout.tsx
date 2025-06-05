@@ -1,10 +1,12 @@
 import { StyleSheet, useColorScheme } from 'react-native'
-import { Stack } from 'expo-router'
+import { Stack, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar';
 import Colors from '../constant/Colors';
 import { useFonts } from 'expo-font';
 import Loader from '../components/Loader';
 import { UserProvider } from '../context/UserContext';
+import { useUser } from '../hooks/useUser';
+import { useEffect } from 'react';
 
 const RootLayout = () => {
     const [fontsLoaded] = useFonts({
@@ -14,6 +16,19 @@ const RootLayout = () => {
 
     const colorScheme = useColorScheme();
     const theme = Colors[colorScheme ?? 'light'];
+
+    const { user } = useUser();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!fontsLoaded) return;
+
+        if (user) {
+            router.replace('/(dashboard)');
+        } else {
+            router.replace('/login');
+        }
+    }, [user, fontsLoaded, router]);
 
     if (!fontsLoaded) return <Loader />;
 
@@ -29,13 +44,13 @@ const RootLayout = () => {
                     animation: 'slide_from_right',
                 }}
             >
-                <Stack.Screen
+                {/* <Stack.Screen
                     name="index"
                     options={{
                         title: 'Home',
                         headerShown: true
                     }}
-                />
+                /> */}
                 <Stack.Screen
                     name="(dashboard)"
                     options={{

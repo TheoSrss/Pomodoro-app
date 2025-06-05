@@ -13,7 +13,6 @@ export type Action = "create" | "start" | "pause" | "abort";
 
 export const usePomodoroSession = () => {
     const { jwt, user } = useUser();
-    // console.log(jwt);
 
     const [pomodoroSession, setPomodoroSession] = useState<PomodoroSession | null>(null);
     const [loading, setLoading] = useState(true);
@@ -33,8 +32,6 @@ export const usePomodoroSession = () => {
             }
         } finally {
             setLoading(false);
-            console.log(pomodoroSession);
-
         }
 
     }, [jwt, user?.id]);

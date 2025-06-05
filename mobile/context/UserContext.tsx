@@ -50,7 +50,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
                 setUser(dataParsed.user);
                 setJwt(dataParsed.token);
             }
-            console.log(jwt, user);
         } catch (error) {
             console.error('Erreur lors du chargement des données utilisateur:', error);
         }
