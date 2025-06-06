@@ -37,11 +37,11 @@ const RootLayout = () => {
             <StatusBar style="auto" />
             <Stack
                 screenOptions={{
-                    headerStyle: { backgroundColor: theme.background },
-                    headerTintColor: theme.text,
-                    gestureEnabled: true,
-                    gestureDirection: 'horizontal',
-                    animation: 'slide_from_right',
+                    // headerStyle: { backgroundColor: 'red' },
+                    // headerTintColor: theme.text,
+                    // gestureEnabled: true,
+                    // gestureDirection: 'horizontal',
+                    // animation: 'slide_from_right',
                 }}
             >
                 {/* <Stack.Screen

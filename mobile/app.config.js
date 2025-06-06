@@ -7,7 +7,7 @@ module.exports = () => ({
         version: "0.0.1",
         orientation: "portrait",
         icon: "./assets/pomo.png",
-        userInterfaceStyle: "light",
+        userInterfaceStyle: "dark",
         newArchEnabled: true,
         splash: {
             image: "./assets/pomo.png",

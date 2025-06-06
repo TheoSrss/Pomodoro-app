@@ -1,8 +1,8 @@
 const Colors = {
-    primary: "#e8e7e8",
+    primary: "red",
 
     dark: {
-        text: "#d4d4d4",
+        text: "red",
         title: "#fff",
         background: "#252231",
         navBackground: "#201e2b",
@@ -22,3 +22,25 @@ const Colors = {
 }
 
 export default Colors
+
+
+// placeholderTextColor="#bbb"
+// backgroundColor: '#ffe5e5',
+//     color: '#b00000',
+    
+//     color: '#444',
+
+//      backgroundColor: '#f0f0f2',
+//         shadowColor: '#ccc',
+
+//                 backgroundColor: '#f7f7f7',
+//         shadowColor: '#bbb',
+
+        // backgroundColor: '#f3f3f5',
+        // shadowColor: '#000',
+        // color: '#222',
+        // color: '#999',
+        // backgroundColor: '#f7f7f7',
+        // shadowColor: '#bbb',
+        // backgroundColor: '#ccc',
+        // color: '#999',

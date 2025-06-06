@@ -4,8 +4,9 @@ import Loader from "../Loader";
 import { useUser } from "../../hooks/useUser";
 
 const UserOnly = ({ children }: { children: React.ReactNode }) => {
-    const { user, authCheck } = useUser();
+    const { user, authCheck, logout } = useUser();
     const router = useRouter();
+    // logout()
 
     useEffect(() => {
         if (authCheck && user === null) {
