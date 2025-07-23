@@ -7,7 +7,9 @@ use App\Repository\GroupSessionMemberRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
+use App\State\GroupSessionMemberProcessor;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GroupSessionMemberRepository::class)]
@@ -15,13 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['member:read']],
     denormalizationContext: ['groups' => ['member:write']],
     security: 'is_granted("ROLE_USER")',
-    operations: [
-        new Get(),
-        new Post(
-            uriTemplate: '/group/{id}/invite',
-            output: GroupSessionMember::class
-        ),
-    ]
+    operations: []
 )]
 class GroupSessionMember
 {
@@ -49,7 +45,7 @@ class GroupSessionMember
     private ?GroupSession $groupSession = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Groups(['member:read'])]
     private ?User $user = null;
 
@@ -57,6 +53,11 @@ class GroupSessionMember
     #[Assert\Choice(choices: GroupSessionMember::STATUSES)]
     #[Groups(['member:read'])]
     private string $status = self::STATUS_INVITED;
+
+    #[ORM\Column(length: 180)]
+    #[Assert\Email]
+    #[Groups(['member:read'])]
+    private string $email;
 
     #[ORM\Column]
     #[Groups(['member:read'])]
@@ -119,4 +120,15 @@ class GroupSessionMember
     {
         return $this->updatedAt;
     }
-} 
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+        return $this;
+    }
+}

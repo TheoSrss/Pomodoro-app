@@ -12,8 +12,9 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Metadata\Link;
-use App\Service\ActiveGroupSessionProvider;
-use App\Service\GroupSessionProcessor;
+use App\State\ActiveGroupSessionProvider;
+use App\State\GroupSessionMemberProcessor;
+use App\State\PomodoroSessionProcessor;
 
 #[ORM\Entity(repositoryClass: GroupSessionRepository::class)]
 #[ApiResource(
@@ -23,25 +24,37 @@ use App\Service\GroupSessionProcessor;
     operations: [
         new Get(),
         new Get(
-            name: 'group_active',
+            name: 'group_session_active',
             uriTemplate: '/group/active',
             provider: ActiveGroupSessionProvider::class,
             output: GroupSession::class,
         ),
         new Post(
-            name: 'group_create',
+            name: 'group_session_create',
             uriTemplate: '/group/create',
-            processor: GroupSessionProcessor::class,
-            output: GroupSession::class
+            processor: GroupSessionMemberProcessor::class,
+            output: PomodoroSession::class,
         ),
         new Post(
-            name: 'group_action',
-            uriTemplate: '/group/{id}/{action}',
-            uriVariables: ['id' => new Link(fromClass: GroupSession::class), 'action' => new Link(fromClass: null, identifiers: ['action'])],
-            processor: GroupSessionProcessor::class,
+            name: 'group_session_invite',
+            uriTemplate: '/group/{group_id}/invite',
+            uriVariables: [
+                'group_id' => new Link(fromClass: GroupSession::class)
+            ],
+            processor: GroupSessionMemberProcessor::class,
+            output: PomodoroSession::class,
+        ),
+        new Post(
+            name: 'group_session_action',
+            uriTemplate: '/group/{group_id}/{action}',
+            uriVariables: [
+                'group_id' => new Link(fromClass: GroupSession::class),
+                'action' => new Link(fromClass: null, identifiers: ['action'])
+            ],
+            processor: PomodoroSessionProcessor::class,
             read: false,
             input: false,
-            output: GroupSession::class
+            output: PomodoroSession::class
         ),
     ]
 )]
@@ -69,21 +82,26 @@ class GroupSession
 
     #[ORM\Column(nullable: true)]
     #[Groups(['group:read'])]
-    private ?\DateTimeImmutable $startedAt = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['group:read'])]
     private ?\DateTimeImmutable $endedAt = null;
 
     #[ORM\OneToMany(mappedBy: 'groupSession', targetEntity: GroupSessionMember::class, orphanRemoval: true)]
     private Collection $members;
 
-    #[ORM\OneToOne(mappedBy: 'groupSession', targetEntity: PomodoroSession::class, cascade: ['persist', 'remove'])]
-    private ?PomodoroSession $pomodoroSession = null;
+    #[ORM\OneToMany(mappedBy: 'groupSession', targetEntity: PomodoroSession::class, cascade: ['persist', 'remove'])]
+    private Collection $pomodoroSessions;
+
+    #[Assert\NotBlank(message: 'At least one email must be provided.')]
+    #[Assert\Count(min: 1, minMessage: 'At least one email must be provided', max: 10, maxMessage: 'Maximum 10 emails allowed')]
+    #[Assert\All([
+        new Assert\Email(message: 'Email "{{ value }}" is not valid.')
+    ])]
+    #[Groups(['group:read', 'group:write'])]
+    private array $emails = [];
 
     public function __construct()
     {
         $this->members = new ArrayCollection();
+        $this->pomodoroSessions = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
     }
 
@@ -117,17 +135,6 @@ class GroupSession
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    public function getStartedAt(): ?\DateTimeImmutable
-    {
-        return $this->startedAt;
-    }
-
-    public function setStartedAt(?\DateTimeImmutable $startedAt): static
-    {
-        $this->startedAt = $startedAt;
-        return $this;
     }
 
     public function getEndedAt(): ?\DateTimeImmutable
@@ -168,14 +175,41 @@ class GroupSession
         return $this;
     }
 
-    public function getPomodoroSession(): ?PomodoroSession
+    /**
+     * @return Collection<int, PomodoroSession>
+     */
+    public function getPomodoroSessions(): Collection
     {
-        return $this->pomodoroSession;
+        return $this->pomodoroSessions;
     }
 
-    public function setPomodoroSession(?PomodoroSession $pomodoroSession): static
+    public function addPomodoroSession(PomodoroSession $session): static
     {
-        $this->pomodoroSession = $pomodoroSession;
+        if (!$this->pomodoroSessions->contains($session)) {
+            $this->pomodoroSessions->add($session);
+            $session->setGroupSession($this);
+        }
         return $this;
     }
-} 
+
+    public function removePomodoroSession(PomodoroSession $session): static
+    {
+        if ($this->pomodoroSessions->removeElement($session)) {
+            if ($session->getGroupSession() === $this) {
+                $session->setGroupSession(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getEmails(): array
+    {
+        return $this->emails;
+    }
+
+    public function setEmails(array $emails): static
+    {
+        $this->emails = $emails;
+        return $this;
+    }
+}

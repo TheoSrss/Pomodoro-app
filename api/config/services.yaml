@@ -1,40 +1,44 @@
 services:
-    # default configuration for services in *this* file
-    _defaults:
-        autowire: true
-        autoconfigure: true
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true
+    autoconfigure: true
 
-    App\:
-        resource: '../src/'
-        exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
+  App\:
+    resource: "../src/"
+    exclude:
+      - "../src/DependencyInjection/"
+      - "../src/Entity/"
+      - "../src/Kernel.php"
 
-    # OAuth 
-    App\Service\OAuth\OAuthServiceFactory:
-        arguments:
-            $locator: !tagged_locator
-                tag: 'app.oauth_service'
-                index_by: class
-    App\Service\OAuth\GoogleOAuthService:
-        tags: ['app.oauth_service']
+  # OAuth
+  App\Service\OAuth\OAuthServiceFactory:
+    arguments:
+      $locator: !tagged_locator
+        tag: "app.oauth_service"
+        index_by: class
+  App\Service\OAuth\GoogleOAuthService:
+    tags: ["app.oauth_service"]
 
-    App\Service\OAuth\GithubOAuthService:
-        tags: ['app.oauth_service']
-    # OAuth 
-    
-    # Mercure JWT Encoder
-    App\Service\MercureJwtEncoder:
-        arguments:
-            $secret: '%env(MERCURE_JWT_SECRET_PUBLIC)%'
+  App\Service\OAuth\GithubOAuthService:
+    tags: ["app.oauth_service"]
+  # OAuth
 
-    App\Service\MercureSubscriberTokenGenerator:
-        arguments:
-            $secret: '%env(MERCURE_JWT_SECRET_PUBLIC)%'
-    # Mercure JWT Encoder
+  # Mercure JWT Encoder
+  App\Service\MercureJwtEncoder:
+    arguments:
+      $secret: "%env(MERCURE_JWT_SECRET_PUBLIC)%"
 
-    acme_api.event.authentication_success_listener:
-        class: App\EventListener\AuthenticationSuccessListener
-        tags:
-            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+  App\Service\MercureSubscriberTokenGenerator:
+    arguments:
+      $secret: "%env(MERCURE_JWT_SECRET_PUBLIC)%"
+  # Mercure JWT Encoder
+
+  acme_api.event.authentication_success_listener:
+    class: App\EventListener\AuthenticationSuccessListener
+    tags:
+      - {
+          name: kernel.event_listener,
+          event: lexik_jwt_authentication.on_authentication_success,
+          method: onAuthenticationSuccessResponse,
+        }
