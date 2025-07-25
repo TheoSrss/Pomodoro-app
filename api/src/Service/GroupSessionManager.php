@@ -76,6 +76,43 @@ class GroupSessionManager
         $member->setUser($user);
         $member->setEmail($email);
         $this->em->persist($member);
+        $this->em->flush();
         $this->mailerService->sendInvitation($email);
+    }
+
+    public function removeMemberFromGroup(int $groupId, int $memberId): void
+    {
+        $user = $this->getUser();
+        $group = $this->em->getRepository(\App\Entity\GroupSession::class)->find($groupId);
+        if (!$group) {
+            throw new \LogicException('Group not found.');
+        }
+        if ($group->getCreator()->getId() !== $user->getId()) {
+            throw new \LogicException('Only the creator can remove members.');
+        }
+        $member = $this->gsmRepository->find($memberId);
+        if (!$member || $member->getGroupSession()->getId() !== $groupId) {
+            throw new \LogicException('Member not found in this group.');
+        }
+        $group->removeMember($member);
+        $this->em->remove($member);
+        $this->em->flush();
+    }
+
+    public function updateCurrentUserStatusForGroup(int $groupId, string $status): void
+    {
+        $user = $this->getUser();
+        $member = $this->gsmRepository->findOneBy([
+            'groupSession' => $groupId,
+            'user' => $user,
+        ]);
+        if (!$member) {
+            throw new \LogicException('You are not a member of this group.');
+        }
+        if (!in_array($status, GroupSessionMember::STATUSES, true)) {
+            throw new \LogicException('Invalid status.');
+        }
+        $member->setStatus($status);
+        $this->em->flush();
     }
 }

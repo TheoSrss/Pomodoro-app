@@ -17,7 +17,20 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['member:read']],
     denormalizationContext: ['groups' => ['member:write']],
     security: 'is_granted("ROLE_USER")',
-    operations: []
+    operations: [
+        new Post(
+            name: 'group_member_action',
+            uriTemplate: '/member/{groupSession_id}/{action}',
+            uriVariables: [
+                'groupSession_id' => new Link(fromClass: GroupSession::class),
+                'action' => new Link(fromClass: null, identifiers: ['action'])
+            ],
+            processor: GroupSessionMemberProcessor::class,
+            read: false,
+            input: false,
+            output: null
+        ),
+    ]
 )]
 class GroupSessionMember
 {

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use App\Repository\GroupSessionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -34,6 +35,7 @@ use App\State\PomodoroSessionProcessor;
             uriTemplate: '/group/create',
             processor: GroupSessionMemberProcessor::class,
             output: PomodoroSession::class,
+            validationContext: ['groups' => ['Default', 'group:create']],
         ),
         new Post(
             name: 'group_session_invite',
@@ -42,7 +44,7 @@ use App\State\PomodoroSessionProcessor;
                 'group_id' => new Link(fromClass: GroupSession::class)
             ],
             processor: GroupSessionMemberProcessor::class,
-            output: PomodoroSession::class,
+            validationContext: ['groups' => ['Default', 'group:emails']],
         ),
         new Post(
             name: 'group_session_action',
@@ -55,6 +57,17 @@ use App\State\PomodoroSessionProcessor;
             read: false,
             input: false,
             output: PomodoroSession::class
+        ),
+        new Delete(
+            name: 'group_session_remove_member',
+            uriTemplate: '/group/{group_id}/remove-member/{member_id}',
+            uriVariables: [
+                'group_id' => new Link(fromClass: GroupSession::class),
+                'member_id' => new Link(fromClass: null, identifiers: ['member_id'])
+            ],
+            processor: GroupSessionMemberProcessor::class,
+            read: false
+
         ),
     ]
 )]
@@ -72,7 +85,7 @@ class GroupSession
     private ?User $creator;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(groups: ['group:create'])]
     #[Groups(['group:read', 'group:write'])]
     private ?string $name = null;
 
@@ -95,7 +108,7 @@ class GroupSession
     #[Assert\All([
         new Assert\Email(message: 'Email "{{ value }}" is not valid.')
     ])]
-    #[Groups(['group:read', 'group:write'])]
+    #[Groups(['group:read', 'group:write', 'group:emails'])]
     private array $emails = [];
 
     public function __construct()

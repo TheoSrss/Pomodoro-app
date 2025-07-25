@@ -11,6 +11,7 @@ enum GroupSessionAction: string
     case ACCEPT = 'accept';
     case DECLINE = 'decline';
     case LEAVE = 'leave';
+    case REMOVE_MEMBER = 'remove_member';
 
     public static function fromString(string $action): self
 
