@@ -1,6 +1,6 @@
 <div align="center">
 
-  <a href="https://pomodoro.theobouaziz.com">
+  <a href="https://pomodoro-app-three-lyart.vercel.app/fr">
     <img src="web/public/pomo.png" alt="logo" width="200" height="auto" />
   </a>
   <h1>Pomodoro</h1>
@@ -12,7 +12,7 @@
   [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
-  <a href="https://pomodoro.theobouaziz.com">
+  <a href="https://pomodoro-app-three-lyart.vercel.app/fr">
     <img src="https://img.shields.io/badge/🚀_Voir_l'application-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="L'application" />
   </a>
 </div>

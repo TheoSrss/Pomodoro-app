@@ -73,7 +73,7 @@ export const usePomodoroSession = () => {
 
     useEffect(() => {
         if (!session?.user?.jwtSubscriber) return;
-
+        // return;zz
         const topic = `/pomodoro/${session.user.id}`;
         const url = new URL(process.env.NEXT_PUBLIC_MERCURE_URL!);
         url.searchParams.append("topic", topic);

@@ -83,9 +83,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: PomodoroSession::class, mappedBy: 'creator', orphanRemoval: true)]
     private Collection $sessions;
 
+    /**
+     * @var Collection<int, GroupSession>
+     */
+    #[ORM\OneToMany(targetEntity: GroupSession::class, mappedBy: 'creator', orphanRemoval: true)]
+    private Collection $groupSessions;
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
+        $this->groupSessions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -208,6 +215,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
     public function getPlainPassword()
     {
         return $this->plainPassword;
@@ -217,6 +225,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->plainPassword = $password;
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GroupSession>
+     */
+    public function getGroupSessions(): Collection
+    {
+        return $this->groupSessions;
+    }
+
+    public function addGroupSession(GroupSession $groupSession): static
+    {
+        if (!$this->groupSessions->contains($groupSession)) {
+            $this->groupSessions->add($groupSession);
+            $groupSession->setCreator($this);
+        }
+        return $this;
+    }
+
+    public function removeGroupSession(GroupSession $groupSession): static
+    {
+        if ($this->groupSessions->removeElement($groupSession)) {
+            if ($groupSession->getCreator() === $this) {
+                $groupSession->setCreator(null);
+            }
+        }
         return $this;
     }
 }

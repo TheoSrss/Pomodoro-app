@@ -18,6 +18,6 @@ enum PomodoroSessionAction: string
                 return $case;
             }
         }
-        throw new NotFoundHttpException("Unknown  action: '$value'");
+        throw new NotFoundHttpException("Unknown PomodoroSessionAction: '$value'");
     }
 }

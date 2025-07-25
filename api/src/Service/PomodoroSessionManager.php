@@ -14,11 +14,12 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class PomodoroSessionManager
 {
+
     public function __construct(
         private EntityManagerInterface $em,
         private Security $security,
         private MessageBusInterface $busForCounter,
-        private PomodoroMercureController $publisher
+        private PomodoroMercureController $publisher,
     ) {}
 
     private function getUser(): User
@@ -68,7 +69,6 @@ class PomodoroSessionManager
         }
 
         $session->setCreator($this->getUser());
-
         $this->em->persist($session);
         $this->em->flush();
 
@@ -95,7 +95,6 @@ class PomodoroSessionManager
 
         $this->busForCounter->dispatch(new UpdatePomodoroTime($session->getId()));
         $this->publisher->publish($session, PomodoroSessionAction::START);
-
         return $session;
     }
 
@@ -121,9 +120,7 @@ class PomodoroSessionManager
 
     public function abortSession(): PomodoroSession
     {
-
         $session = $this->getActiveSession();
-
         $this->assertStartedSession($session);
 
         $session->setIsAborted(true);

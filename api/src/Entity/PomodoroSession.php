@@ -69,6 +69,9 @@ class PomodoroSession
     #[Groups(['pomodoro:read'])]
     private ?User $creator;
 
+    #[ORM\OneToOne(inversedBy: 'pomodoroSession', targetEntity: GroupSession::class)]
+    private ?GroupSession $groupSession = null;
+
     #[ORM\Column(type: 'integer')]
     // #[Assert\Range(min: 300, max: 3600)]
     #[Assert\NotNull]
@@ -285,6 +288,17 @@ class PomodoroSession
     {
         $this->currentCycle = $currentCycle;
 
+        return $this;
+    }
+
+    public function getGroupSession(): ?GroupSession
+    {
+        return $this->groupSession;
+    }
+
+    public function setGroupSession(?GroupSession $groupSession): static
+    {
+        $this->groupSession = $groupSession;
         return $this;
     }
 }
